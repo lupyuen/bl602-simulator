@@ -22,4 +22,22 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
     
     (Without the Blockly part, since we can't compile Rust in a Web Browser)
     
-1.  We might be able to __Simulate C Firmware__ too, if we tweak the BL602 C Firmware to build with Emscripten, and call the Stub Functions
+Why do this in __Rust__?
+
+- Because we have already __parsed the BL602 IoT SDK interfaces__ with `bindgen`
+
+  (While creating the BL602 Rust Wrapper) 
+
+- Which lets us __manipulate the BL602 SDK interfaces__ with Rust in interesting ways
+
+  (Like our `safe_wrap` Procedure Macro in Rust)
+    
+More about __BL602 Rust Wrapper__...
+
+- [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
+ 
+We might be able to __Simulate C Firmware__ too, if we...
+    
+- Tweak the BL602 C Firmware to __build with Emscripten__
+
+- And call the __Stub Functions__
