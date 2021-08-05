@@ -12,7 +12,7 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
 
 1.  We __compile to WebAssembly__ the Rust Firmware and Rust Wrapper
 
-1.  Intercept calls to BL602 IoT SDK by __Stub Functions__
+1.  In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
 
     (Like for the BL602 GPIO HAL)
 
