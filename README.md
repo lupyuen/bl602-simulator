@@ -16,7 +16,7 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
 
     (Like for the BL602 GPIO HAL)
 
-1.  Add a __HTML + JavaScript UI__ to simulate the BL602 / BL602 Board...
+1.  Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or __PineDio Stack BL604__...
 
     - [__“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”__](https://lupyuen.github.io/articles/wasm)
     
