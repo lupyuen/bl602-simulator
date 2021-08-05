@@ -52,6 +52,12 @@ We might be able to __Simulate C Firmware__ too, if we...
 
 - And call the __Stub Functions__
 
+# Build BL602 Rust Firmware for WebAssembly
+
+```bash
+cargo build --target wasm32-unknown-emscripten
+```
+
 # Sample BL602 Rust Firmware
 
 ```rust
