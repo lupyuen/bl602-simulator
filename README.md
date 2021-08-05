@@ -1,4 +1,4 @@
-# bl602-wasm: BL602 / BL604 Simulator in WebAssembly
+BL602 / BL604 Simulator in WebAssembly
 
 Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssembly__...
 
