@@ -30,12 +30,22 @@ Why do this in __Rust__?
 
 - Which lets us __manipulate the BL602 SDK interfaces__ with Rust in interesting ways
 
-  (Like our `safe_wrap` Procedure Macro in Rust)
+  (Like our `safe_wrap` Procedural Macro in Rust)
     
-More about __BL602 Rust Wrapper__...
+- More about __BL602 Rust Wrapper__...
 
-- [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
- 
+  - [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
+
+Why are we doing this? What __problem are we solving__?
+
+1.  Shorten the __Code - Build - Flash - Test Cycle__ for BL602 and BL604
+
+    (Because flashing BL602 via UART is kinda cumbersome)
+    
+1.  We could potentially catch __BL602 SDK Calling Errors__ for new devs and __explain the errors in a friendly way__
+
+    (Invalid parameters or usage, like reading a GPIO Pin configured for output)
+
 We might be able to __Simulate C Firmware__ too, if we...
     
 - Tweak the BL602 C Firmware to __build with Emscripten__
