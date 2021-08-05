@@ -21,3 +21,5 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
     - [__“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”__](https://lupyuen.github.io/articles/wasm)
     
     (Without the Blockly part, since we can't compile Rust in a Web Browser)
+    
+1.  We might be able to __Simulate C Firmware__ too, if we tweak the BL602 C Firmware to build with Emscripten, and call the Stub Functions
