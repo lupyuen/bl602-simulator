@@ -19,3 +19,5 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
 1.  Add a __HTML + JavaScript UI__ to simulate the BL602 / BL602 Board...
 
     - [__“Simulate RISC-V BL602 with WebAssembly, uLisp and Blockly”__](https://lupyuen.github.io/articles/wasm)
+    
+    (Without the Blockly part, since we can't compile Rust in a Web Browser)
