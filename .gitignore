@@ -12,4 +12,11 @@
 __pycache__
 
 # Rust
-*/rust/target/
+**/target
+
+# WebAssembly
+src/*.o
+wasm/*.html
+wasm/*.js
+wasm/*.o
+wasm/*.wasm

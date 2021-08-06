@@ -1,16 +1,14 @@
-# Build uLisp for WebAssembly: wasm/ulisp.html, ulisp.js, ulisp.wasm
-
 ###############################################################################
-# Typical Compile to WebAssembly with emscripten
-# emcc hello.c -s WASM=1 -o hello.html
+# Compile C to WebAssembly with emscripten
 
 # WebAssembly C and C++ Source Files
-WASM_CSRCS := src/ulisp.c wasm/wasm.c
+WASM_CSRCS := wasm/wasm.c
 
 # Build uLisp app: wasm/ulisp.html, ulisp.js, ulisp.wasm
 TARGETS:= wasm/ulisp
 
-DEPS   := 
+# Link with BL602 Rust Firmware compiled into WebAssembly
+LIBS   := sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a
 
 # Use emscripten compiler
 CC     := emcc
@@ -22,7 +20,7 @@ CCFLAGS := \
 	-g \
 	-I include \
 	-s WASM=1 \
-    -s "EXPORTED_FUNCTIONS=[ '_setup_ulisp', '_execute_ulisp', '_clear_simulation_events', '_get_simulation_events' ]" \
+    -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" \
 	-s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 
 LDFLAGS := 
