@@ -1,6 +1,10 @@
-//!  Blink the LED connected to a GPIO Pin
-//// TODO: #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
-#![feature(libc)]  ////  TODO: Allow C Standard Library, which will be mapped by emscripten to JavaScript
+//!  BL602 Rust Firmware that blinks the LED connected to a GPIO Pin
+
+//// TODO: For BL602:
+//// #![no_std]  //  Use the Rust Core Library instead of the Rust Standard Library, which is not compatible with embedded systems
+
+//// TODO: For WebAssembly:
+#![feature(libc)]  //  Allow C Standard Library, which will be mapped by emscripten to JavaScript
 
 //  Import Libraries
 use bl602_sdk::{       //  Rust Wrapper for BL602 IoT SDK
@@ -48,7 +52,7 @@ extern "C" fn rust_main(  //  Declare `extern "C"` because it will be called by 
 
 /// This function is called on panic, like an assertion failure
 #[panic_handler]
-#[cfg(not(target_arch = "wasm32"))]  ////  TODO
+#[cfg(not(target_arch = "wasm32"))]  ////  TODO: For WebAssembly, use the default panic handler
 fn panic(_info: &core::panic::PanicInfo) -> ! {  //  `!` means that panic handler will never return
     //  TODO: Implement the complete panic handler like this:
     //  https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/lib.rs#L115-L146
