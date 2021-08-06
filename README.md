@@ -1,8 +1,8 @@
 # BL602 / BL604 Simulator in WebAssembly
 
-Try it here: https://lupyuen.github.io/bl602-simulator/
+__Try it here__: https://lupyuen.github.io/bl602-simulator/
 
-Follow the updates on Twitter: https://twitter.com/MisterTechBlog/status/1423169766080933891
+__Follow the updates on Twitter__: https://twitter.com/MisterTechBlog/status/1423169766080933891
 
 Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssembly__...
 
