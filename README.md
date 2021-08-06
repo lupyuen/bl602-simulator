@@ -55,6 +55,7 @@ We might be able to __Simulate C Firmware__ too, if we...
 # Build BL602 Rust Firmware for WebAssembly
 
 ```bash
+cd sdk_app_rust_gpio/rust
 cargo build --target wasm32-unknown-emscripten
 ```
 
