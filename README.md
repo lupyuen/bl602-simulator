@@ -54,9 +54,31 @@ We might be able to __Simulate C Firmware__ too, if we...
 
 # Build BL602 Rust Firmware for WebAssembly
 
+To compile BL602 Rust Firmware into WebAssembly...
+
 ```bash
 cd sdk_app_rust_gpio/rust
 cargo build --target wasm32-unknown-emscripten
+# Produces the library file target/wasm32-unknown-emscripten/debug/libapp.a
+```
+
+Build Log:
+
+```text
+Compiling proc-macro2 v1.0.28
+Compiling unicode-xid v0.2.2
+Compiling memchr v2.4.0
+Compiling syn v1.0.74
+Compiling heapless v0.7.3
+Compiling cty v0.2.1
+Compiling lazy_static v1.4.0
+Compiling rustc-serialize v0.3.24
+Compiling cstr_core v0.2.4
+Compiling quote v1.0.9
+Compiling bl602-macros v0.0.2
+Compiling bl602-sdk v0.0.6
+Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
+Finished dev [unoptimized + debuginfo] target(s) in 49.48s
 ```
 
 # Sample BL602 Rust Firmware
