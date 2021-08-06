@@ -60,7 +60,7 @@ fn panic(_info: &core::panic::PanicInfo) -> ! {  //  `!` means that panic handle
     //  For now we display a message
     puts("TODO: Rust panic"); 
 
-	//  Loop forever, do not pass go, do not collect $200
+    //  Loop forever, do not pass go, do not collect $200
     loop {}
 }
 
