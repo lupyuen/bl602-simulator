@@ -4,6 +4,8 @@ __Try it here__: https://lupyuen.github.io/bl602-simulator/
 
 __Follow the updates on Twitter__: https://twitter.com/MisterTechBlog/status/1423169766080933891
 
+![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
+
 Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssembly__...
 
 1.  We take this BL602 / BL604 __Blinky Firmware in Rust__...
