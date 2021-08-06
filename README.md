@@ -80,6 +80,8 @@ make -f wasm.mk
 
 # Build Log
 
+Compile the BL602 Rust Firmware...
+
 ```text
 Compiling proc-macro2 v1.0.28
 Compiling unicode-xid v0.2.2
@@ -95,4 +97,18 @@ Compiling bl602-macros v0.0.2
 Compiling bl602-sdk v0.0.6
 Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
 Finished dev [unoptimized + debuginfo] target(s) in 49.48s
+```
+
+Link the BL602 Rust Firmware with Emscripten...
+
+```text
+emcc -o wasm/ulisp.html \
+-Wl,--start-group \
+sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a \
+wasm/wasm.o wasm/ulisp.o \
+-Wl,--end-group \
+-g -I include -s WASM=1 -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]" \
+
+cp wasm/ulisp.js   docs
+cp wasm/ulisp.wasm docs
 ```
