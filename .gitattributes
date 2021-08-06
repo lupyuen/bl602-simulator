@@ -20,5 +20,6 @@ toolchain/* linguist-vendored
 *.png   binary
 *.pyd   binary
 *.txt   binary
+*.wasm  binary
 *.woff  binary
 genromfs_* binary
