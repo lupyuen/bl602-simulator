@@ -1,3 +1,6 @@
+//  The code below has been moved to Rust: sdk_app_rust_gpio/rust/src/simulator.rs
+
+#ifdef NOTUSED
 //  WebAssembly Interface for uLisp
 #include <setjmp.h>
 #include <stdio.h>
@@ -91,3 +94,4 @@ void ble_npl_time_delay(uint32_t ticks) {
         ticks
     );
 }
+#endif  //  NOTUSED
