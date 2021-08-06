@@ -59,9 +59,19 @@ We might be able to __Simulate C Firmware__ too, if we...
 To compile BL602 Rust Firmware into WebAssembly...
 
 ```bash
-cd sdk_app_rust_gpio/rust
+# Download source code
+git clone --recursive https://github.com/lupyuen/bl602-simulator
+cd bl602-simulator
+
+# Compile the BL602 Rust Firmware
+pushd sdk_app_rust_gpio/rust
 cargo build --target wasm32-unknown-emscripten
 # Produces the library file target/wasm32-unknown-emscripten/debug/libapp.a
+popd
+
+# Link the BL602 Rust Firmware with Emscripten
+. ~/emsdk/emsdk_env.sh
+make -f wasm.mk
 ```
 
 # Build Log
