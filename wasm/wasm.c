@@ -77,7 +77,7 @@ int bl_gpio_output_set(uint8_t pin, uint8_t value) {
 }
 
 /// Add a delay event. 1 tick is 1 millisecond
-void time_delay(uint32_t ticks) { 
+void ble_npl_time_delay(uint32_t ticks) { 
     //  How many chars in the Simulation Events buffer to keep
     int keep = 
         strlen(events)  //  Keep the existing events

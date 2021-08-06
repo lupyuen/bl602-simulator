@@ -1336,8 +1336,8 @@
       /// Wait for emscripten to be initialised
       Module.onRuntimeInitialized = function() {
         //  Init uLisp interpreter
-        Module.print("Init uLisp...\n");
-        Module._setup_ulisp();
+        //  Module.print("Init...\n");
+        //  Module._setup_ulisp();
 
         // Load the simulator pic and render it
         const image = new Image();
@@ -1374,8 +1374,8 @@
           Module._clear_simulation_events();
 
           //  Execute the uLisp script in WebAssembly
-          Module.print("\nExecute uLisp: " + scr + "\n");
-          Module._execute_ulisp(scr_ptr);
+          Module.print("\nExecute: " + scr + "\n");
+          Module._rust_main();
 
           //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
           //  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
