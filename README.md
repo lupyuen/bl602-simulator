@@ -52,6 +52,8 @@ Why are we doing this? What __problem are we solving__?
 
     (Invalid parameters or usage, like reading a GPIO Pin configured for output)
 
+1.  __Automated Testing__ of BL602 Firmware
+
 We might be able to __Simulate C Firmware__ too, if we...
     
 - Tweak the BL602 C Firmware to __build with Emscripten__
