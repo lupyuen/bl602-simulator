@@ -8,13 +8,13 @@ use serde::{Serialize, Deserialize};
 #[allow(non_camel_case_types)]
 enum SimulationEvent {
     /// GPIO Set Output:
-    /// { "gpio_output_set": { "pin": 11, "value": 1 }
+    /// `{ "gpio_output_set": { "pin": 11, "value": 1 }`
     gpio_output_set {
         pin:   u8,
         value: u8,
     },
     /// Time Delay:
-    /// { "time_delay": { "ticks": 1000 } }
+    /// `{ "time_delay": { "ticks": 1000 } }`
     time_delay {
         ticks: u32,
     },
@@ -24,10 +24,10 @@ enum SimulationEvent {
 static mut SIMULATION_EVENTS: Vec<SimulationEvent> = Vec::new();
 
 /// String Buffer that returns the JSON Stream of Simulation Events:
-/// [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+/// `[ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
 ///   { "time_delay": { "ticks": 1000 } }, 
 ///   ... 
-/// ]
+/// ]`
 static mut EVENT_BUFFER: [u8; 1024] = [0; 1024];
 
 /// Clear the JSON Stream of Simulation Events
