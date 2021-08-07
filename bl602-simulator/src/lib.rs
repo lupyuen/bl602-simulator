@@ -94,7 +94,10 @@ extern "C" fn bl_gpio_enable_output(_pin: u8, _pullup: u8, _pulldown: u8)
 #[no_mangle]  //  Don't mangle the function name
 extern "C" fn bl_gpio_output_set(pin: u8, value: u8)
 -> c_int {
-    // Add a GPIO Set Output event
+    //  TODO: If `bl_gpio_output_set` is called without 
+    //  `bl_gpio_enable_output`, we show a helpful message
+
+    //  Add a GPIO Set Output event
     let ev = SimulationEvent::gpio_output_set { 
         pin,
         value,
@@ -111,7 +114,7 @@ extern "C" fn bl_gpio_output_set(pin: u8, value: u8)
 extern "C" fn ble_npl_time_delay(
     ticks: u32  //  Number of ticks to sleep
 ) {
-    // Add a Time Delay event
+    //  Add a Time Delay event
     let ev = SimulationEvent::time_delay { 
         ticks,
     };
