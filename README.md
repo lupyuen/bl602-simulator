@@ -46,6 +46,8 @@ Why do this in __Rust__?
 
   - [__"Rust on RISC-V BL602: Is It Sunny?"__](https://lupyuen.github.io/articles/adc)
 
+# Why Simulate BL602 / BL604 Firmware?
+
 Why are we doing this? What __problem are we solving__?
 
 1.  Shorten the __Code - Build - Flash - Test Cycle__ for BL602 and BL604
@@ -56,9 +58,13 @@ Why are we doing this? What __problem are we solving__?
 
     (Invalid parameters or usage, like reading a GPIO Pin configured for output)
 
+1.  Make it easier to __Learn Embedded Programming__
+
+    (Even without any Embedded Hardware)
+
 1.  __Automated Testing__ of BL602 Firmware
 
-1.  __Tracing Calls to BL602 IoT SDK__ for debugging
+1.  __Trace Calls to BL602 IoT SDK__ for debugging
 
 We might be able to __Simulate C Firmware__ too, if we...
     
@@ -66,7 +72,7 @@ We might be able to __Simulate C Firmware__ too, if we...
 
 - And call the __Stub Functions__
 
-# Build BL602 Rust Firmware for WebAssembly
+# Build BL602 / BL604 Rust Firmware for WebAssembly
 
 To compile BL602 Rust Firmware into WebAssembly...
 
@@ -81,7 +87,17 @@ make
 # Produces outputs in the `docs` folder: wasm.js, wasm.wasm
 ```
 
-To run the BL602 Simulator, start a Local Web Server and browse to __`docs/wasm.html`__
+# Run BL602 / BL604 Simulator with WebAssembly
+
+To run the BL602 Simulator...
+
+1.  Start a __Local Web Server__
+
+    [(Like Web Server for Chrome)](https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/overview)
+
+1.  Browse to __`docs/wasm.html`__
+
+1.  Click __`Run`__
 
 # Build Log
 
