@@ -1,5 +1,5 @@
 ###############################################################################
-# Compile Rust and C to WebAssembly with emscripten
+# Compile Rust and C to WebAssembly with Emscripten
 
 # WebAssembly C and C++ Source Files
 WASM_CSRCS :=
@@ -17,8 +17,8 @@ LIBS   := \
 CC     := emcc
 CPP    := em++
 
-# Options for emscripten. We specify the C WebAssembly functions to be exported.
-# TODO: Change "_rust_main" to the Rust command names.
+# Options for Emscripten. We specify the WebAssembly Functions to be exported.
+# TODO: Change `_rust_main` to the Rust command names.
 CCFLAGS := \
 	-g \
 	-I include \
@@ -47,13 +47,12 @@ clean:
 	rm wasm/*.txt || true
 	rm -r $(HOME)/.emscripten_cache || true
 
+# Compile C files with Emscripten
 $(OBJ): %.o : %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CCFLAGS)
 
-# TODO: Build C++ files with em++
-# $(OBJ): %.o : %.cpp $(DEPS)
-#	$(CPP) -c -o $@ $< $(CCFLAGS)
-
+# Build the Rust Firmware and Rust Simulator Library and link with Emscripten
+# TODO: Copy the WebAssembly outputs to docs folder manually in Windows
 $(TARGETS): % : $(filter-out $(MAINS), $(OBJ)) %.o
 	# Build the Rust Firmware and Rust Simulator Library
 	cargo build --target wasm32-unknown-emscripten
