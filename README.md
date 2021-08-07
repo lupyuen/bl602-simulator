@@ -30,6 +30,8 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
     
     (Without the Blockly part, since we can't compile Rust in a Web Browser)
     
+    ![Handling BL602 Simulator Events](https://lupyuen.github.io/images/rust-simulator.png)
+
 Why do this in __Rust__?
 
 - Because we have already __parsed the BL602 IoT SDK interfaces__ with `bindgen`
