@@ -10,8 +10,8 @@ TARGETS:= wasm/wasm
 # Link with BL602 Rust Firmware compiled into WebAssembly
 # and the BL602 Rust Simulator Library
 LIBS   := \
-	sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a \
-	bl602-simulator/target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
+	target/wasm32-unknown-emscripten/debug/libapp.a \
+	target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
 
 # Use emscripten compiler
 CC     := emcc
@@ -54,6 +54,10 @@ $(OBJ): %.o : %.c $(DEPS)
 #	$(CPP) -c -o $@ $< $(CCFLAGS)
 
 $(TARGETS): % : $(filter-out $(MAINS), $(OBJ)) %.o
+	# Build the Rust Firmware and Rust Simulator Library
+	cargo build --target wasm32-unknown-emscripten
+
+	# Link the Rust Firmware and Rust Simulator Library with Emscripten
 	$(CC) -o $@.html \
 	-Wl,--start-group \
 	$(LIBS) \
@@ -61,5 +65,7 @@ $(TARGETS): % : $(filter-out $(MAINS), $(OBJ)) %.o
 	-Wl,--end-group \
 	$(CCFLAGS) \
 	$(LDFLAGS)
+
+	# Copy the WebAssembly outputs to the docs folder for GitHub Pages
 	cp wasm/wasm.js   docs
 	cp wasm/wasm.wasm docs

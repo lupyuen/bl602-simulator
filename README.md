@@ -75,72 +75,47 @@ To compile BL602 Rust Firmware into WebAssembly...
 git clone --recursive https://github.com/lupyuen/bl602-simulator
 cd bl602-simulator
 
-# Compile the BL602 Rust Firmware
-pushd sdk_app_rust_gpio/rust
-cargo build --target wasm32-unknown-emscripten
-# Produces the library file target/wasm32-unknown-emscripten/debug/libapp.a
-popd
+# Compile the Rust Firmware, Rust Simulator Library and link with Emscripten
+make
 
-# Compile the BL602 Rust Simulator Library
-pushd bl602-simulator
-cargo build --target wasm32-unknown-emscripten
-# Produces the library file target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
-popd
-
-# Link the BL602 Rust Firmware and BL602 Rust Simulator Library with Emscripten
-. ~/emsdk/emsdk_env.sh
-make -f wasm.mk
+# Produces outputs in the `docs` folder: wasm.js, wasm.wasm
 ```
 
 To run the BL602 Simulator, start a Local Web Server and browse to __`docs/wasm.html`__
 
 # Build Log
 
-Compile the BL602 Rust Firmware...
-
 ```text
-Compiling proc-macro2 v1.0.28
-Compiling unicode-xid v0.2.2
-Compiling memchr v2.4.0
-Compiling syn v1.0.74
-Compiling heapless v0.7.3
-Compiling cty v0.2.1
-Compiling lazy_static v1.4.0
-Compiling rustc-serialize v0.3.24
-Compiling cstr_core v0.2.4
-Compiling quote v1.0.9
-Compiling bl602-macros v0.0.2
-Compiling bl602-sdk v0.0.6
-Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
-Finished dev [unoptimized + debuginfo] target(s) in 49.48s
-```
-
-Compile the BL602 Rust Simulator Library...
-
-```text
-Compiling proc-macro2 v1.0.28
-Compiling unicode-xid v0.2.2
-Compiling syn v1.0.74
-Compiling serde_derive v1.0.127
-Compiling serde v1.0.127
-Compiling ryu v1.0.5
-Compiling serde_json v1.0.66
-Compiling itoa v0.4.7
-Compiling quote v1.0.9
-Compiling bl602-simulator v0.0.1 (/mnt/c/pinecone/bl602-simulator/bl602-simulator) 
-Finished dev [unoptimized + debuginfo] target(s) in 1m 08s
-```
-
-Link the BL602 Rust Firmware with Emscripten...
-
-```text
+# Build the Rust Firmware and Rust Simulator Library
+cargo build --target wasm32-unknown-emscripten
+   Compiling proc-macro2 v1.0.28
+   Compiling unicode-xid v0.2.2
+   Compiling syn v1.0.74
+   Compiling memchr v2.4.0
+   Compiling serde_derive v1.0.127
+   Compiling cty v0.2.1
+   Compiling serde v1.0.127
+   Compiling ryu v1.0.5
+   Compiling heapless v0.7.4
+   Compiling rustc-serialize v0.3.24
+   Compiling lazy_static v1.4.0
+   Compiling serde_json v1.0.66
+   Compiling cstr_core v0.2.4
+   Compiling quote v1.0.9
+   Compiling bl602-macros v0.0.2
+   Compiling bl602-sdk v0.0.6
+   Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
+   Compiling bl602-simulator v0.0.1 (/mnt/c/pinecone/bl602-simulator/bl602-simulator)
+    Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
+# Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
 -Wl,--start-group \
-sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a bl602-simulator/target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
+target/wasm32-unknown-emscripten/debug/libapp.a target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
 wasm/wasm.o \
 -Wl,--end-group \
 -g -I include -s WASM=1 -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]" \
 
+# Copy the WebAssembly outputs to the docs folder for GitHub Pages
 cp wasm/wasm.js   docs
 cp wasm/wasm.wasm docs
 ```
