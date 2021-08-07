@@ -1,5 +1,10 @@
+# Running `cargo build` at the root will build these projects
 [workspace]
 members = [
+    # BL602 Rust Simulator Library
     "bl602-simulator",
+
+    # BL602 Rust Firmware
+    # TODO: Change this to your Rust Firmware
     "sdk_app_rust_gpio/rust",
 ]
