@@ -1505,7 +1505,7 @@ function createExportWrapper(name, fixedasm) {
 }
 
 
-var wasmBinaryFile = 'ulisp.wasm';
+var wasmBinaryFile = 'wasm.wasm';
 if (!isDataURI(wasmBinaryFile)) {
   wasmBinaryFile = locateFile(wasmBinaryFile);
 }

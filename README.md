@@ -107,16 +107,32 @@ Compiling app v0.0.1 (/mnt/c/pinecone/bl602-simulator/sdk_app_rust_gpio/rust)
 Finished dev [unoptimized + debuginfo] target(s) in 49.48s
 ```
 
+Compile the BL602 Rust Simulator Library...
+
+```text
+Compiling proc-macro2 v1.0.28
+Compiling unicode-xid v0.2.2
+Compiling syn v1.0.74
+Compiling serde_derive v1.0.127
+Compiling serde v1.0.127
+Compiling ryu v1.0.5
+Compiling serde_json v1.0.66
+Compiling itoa v0.4.7
+Compiling quote v1.0.9
+Compiling bl602-simulator v0.0.1 (/mnt/c/pinecone/bl602-simulator/bl602-simulator) 
+Finished dev [unoptimized + debuginfo] target(s) in 1m 08s
+```
+
 Link the BL602 Rust Firmware with Emscripten...
 
 ```text
-emcc -o wasm/ulisp.html \
+emcc -o wasm/wasm.html \
 -Wl,--start-group \
-sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a \
-wasm/wasm.o wasm/ulisp.o \
+sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a bl602-simulator/target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
+wasm/wasm.o \
 -Wl,--end-group \
 -g -I include -s WASM=1 -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]" \
 
-cp wasm/ulisp.js   docs
-cp wasm/ulisp.wasm docs
+cp wasm/wasm.js   docs
+cp wasm/wasm.wasm docs
 ```

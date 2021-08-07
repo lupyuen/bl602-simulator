@@ -2,10 +2,10 @@
 # Compile C to WebAssembly with emscripten
 
 # WebAssembly C and C++ Source Files
-WASM_CSRCS := wasm/wasm.c
+WASM_CSRCS :=
 
-# Build uLisp app: wasm/ulisp.html, ulisp.js, ulisp.wasm
-TARGETS:= wasm/ulisp
+# Build wasm app: wasm/wasm.html, wasm.js, wasm.wasm
+TARGETS:= wasm/wasm
 
 # Link with BL602 Rust Firmware compiled into WebAssembly
 # and the BL602 Rust Simulator Library
@@ -61,5 +61,5 @@ $(TARGETS): % : $(filter-out $(MAINS), $(OBJ)) %.o
 	-Wl,--end-group \
 	$(CCFLAGS) \
 	$(LDFLAGS)
-	cp wasm/ulisp.js   docs
-	cp wasm/ulisp.wasm docs
+	cp wasm/wasm.js   docs
+	cp wasm/wasm.wasm docs

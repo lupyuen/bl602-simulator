@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>uLisp WebAssembly</title>
+    <title>BL602 Rust Simulator in WebAssembly</title>
     <style>
       body {
         font-family: arial;
@@ -1323,17 +1323,13 @@
     <!--  Custom Script  -->
     <script type="text/javascript">
 
-      /// JSON Stream of Simulation Events emitted by uLisp Interpreter. Looks like...
+      /// JSON Stream of Simulation Events emitted by Rust Firmware. Looks like...
       ///  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
       ///    { "time_delay": { "ticks": 1000 } }, ... ]
       let simulation_events = [];
 
       /// Wait for emscripten to be initialised
       Module.onRuntimeInitialized = function() {
-        //  Init uLisp interpreter
-        //  Module.print("Init...\n");
-        //  Module._setup_ulisp();
-
         // Load the simulator pic and render it
         const image = new Image();
         image.onload = renderSimulator;  //  Draw when image has loaded
@@ -1356,8 +1352,7 @@
 
       /// Run the script in the input box
       function runScript() {
-        //  Get the uLisp script 
-        //  var scr = "( list 1 2 3 )";
+        //  Get the script
         const scr = document.getElementById("input").value;
 
         //  Allocate WebAssembly memory for the script
@@ -1368,7 +1363,7 @@
           //  Clear the JSON Stream of Simulation Events in WebAssembly
           Module._clear_simulation_events();
 
-          //  Execute the uLisp script in WebAssembly
+          //  Execute the script in WebAssembly
           Module.print("\nExecute: " + scr + "\n");
           Module._rust_main();
 
@@ -1474,6 +1469,6 @@
     </script>    
     <!--  End of Custom Script  -->
 
-    <script async type="text/javascript" src="ulisp.js"></script>
+    <script async type="text/javascript" src="wasm.js"></script>
   </body>
 </html>
