@@ -75,7 +75,13 @@ cargo build --target wasm32-unknown-emscripten
 # Produces the library file target/wasm32-unknown-emscripten/debug/libapp.a
 popd
 
-# Link the BL602 Rust Firmware with Emscripten
+# Compile the BL602 Rust Simulator Library
+pushd bl602-simulator
+cargo build --target wasm32-unknown-emscripten
+# Produces the library file target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
+popd
+
+# Link the BL602 Rust Firmware and BL602 Rust Simulator Library with Emscripten
 . ~/emsdk/emsdk_env.sh
 make -f wasm.mk
 ```

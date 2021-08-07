@@ -6,9 +6,6 @@
 //// TODO: For WebAssembly:
 #![feature(libc)]  //  Allow C Standard Library, which will be mapped by emscripten to JavaScript
 
-//// TODO: Move simulator to its own crate
-mod simulator;
-
 //  Import Libraries
 use bl602_sdk::{       //  Rust Wrapper for BL602 IoT SDK
     gpio,              //  GPIO HAL

@@ -8,14 +8,17 @@ WASM_CSRCS := wasm/wasm.c
 TARGETS:= wasm/ulisp
 
 # Link with BL602 Rust Firmware compiled into WebAssembly
-LIBS   := sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a
+# and the BL602 Rust Simulator Library
+LIBS   := \
+	sdk_app_rust_gpio/rust/target/wasm32-unknown-emscripten/debug/libapp.a \
+	bl602-simulator/target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
 
 # Use emscripten compiler
 CC     := emcc
 CPP    := em++
 
-# Options for emscripten. We specify the C WebAssembly 
-# functions to be exported.
+# Options for emscripten. We specify the C WebAssembly functions to be exported.
+# TODO: Change "_rust_main" to the Rust command names.
 CCFLAGS := \
 	-g \
 	-I include \
