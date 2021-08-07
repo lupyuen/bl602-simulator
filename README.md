@@ -77,6 +77,10 @@ We might be able to __Simulate C Firmware__ too, if we...
 To compile BL602 Rust Firmware into WebAssembly...
 
 ```bash
+# Configure emscripten. See https://emscripten.org/docs/getting_started/downloads.html
+# For Windows: emsdk\emsdk_env.bat
+. ~/emsdk/emsdk_env.sh
+
 # Download source code
 git clone --recursive https://github.com/lupyuen/bl602-simulator
 cd bl602-simulator
