@@ -22,7 +22,7 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
 
     (Like for the BL602 GPIO HAL)
 
-    - [__Stub Functions for BL602 Simulator__](bl602-simulator/src/lib.rs)
+    - [__Rust Stub Functions for BL602 Simulator__](bl602-simulator/src/lib.rs)
 
 1.  Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or __PineDio Stack BL604__...
 
