@@ -1,5 +1,5 @@
 ###############################################################################
-# Compile C to WebAssembly with emscripten
+# Compile Rust and C to WebAssembly with emscripten
 
 # WebAssembly C and C++ Source Files
 WASM_CSRCS :=
@@ -39,6 +39,7 @@ OBJ    := \
 all: $(TARGETS)
 
 clean:
+	cargo clean
 	rm *.o || true
 	rm wasm/*.o || true
 	rm wasm/*.wasm || true
