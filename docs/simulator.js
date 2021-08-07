@@ -27,10 +27,17 @@ function renderSimulator() {
   ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 }
 
-/// Run the script in the input box
+/// Run the command in the input box
 function runScript() {
-  //  Get the script
-  const scr = document.getElementById("input").value;
+  //  Get the command, e.g. `rust_main`
+  const scr = document.getElementById("input").value.trim();
+
+  //  Get the WebAssembly Function, e.g. `Module._rust_main`
+  const func = Module["_" + scr];
+  if (typeof func !== "function") {
+    Module.print("Unknown command: " + scr + ". Remember to add _" + scr + " to EXPORTED_FUNCTIONS in Makefile");
+    return;
+  }
 
   //  Allocate WebAssembly memory for the script
   const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
@@ -40,9 +47,9 @@ function runScript() {
     //  Clear the JSON Stream of Simulation Events in WebAssembly
     Module._clear_simulation_events();
 
-    //  Execute the script in WebAssembly
+    //  Execute the WebAssembly Function
     Module.print("\nExecute: " + scr + "\n");
-    Module._rust_main();
+    func();  //  TODO: Pass the command-line args
 
     //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
     //  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
