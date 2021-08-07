@@ -10,7 +10,7 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
 
 1.  We take this BL602 / BL604 __Blinky Firmware in Rust__...
 
-    - [__`sdk_app_rust_gpio`__](sdk_app_rust_gpio/rust/src/lib.rs)
+    - [__Rust Blinky Firmware for BL602__](sdk_app_rust_gpio/rust/src/lib.rs)
 
 1.  Which calls the __Rust Wrapper for BL602 IoT SDK__...
 
@@ -21,6 +21,8 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
 1.  In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
 
     (Like for the BL602 GPIO HAL)
+
+    - [__Stub Functions for BL602 Simulator__](bl602-simulator/src/lib.rs)
 
 1.  Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or __PineDio Stack BL604__...
 
