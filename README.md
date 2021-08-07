@@ -58,6 +58,8 @@ Why are we doing this? What __problem are we solving__?
 
 1.  __Automated Testing__ of BL602 Firmware
 
+1.  __Tracing Calls to BL602 IoT SDK__ for debugging
+
 We might be able to __Simulate C Firmware__ too, if we...
     
 - Tweak the BL602 C Firmware to __build with Emscripten__
