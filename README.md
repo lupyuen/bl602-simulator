@@ -86,6 +86,8 @@ popd
 make -f wasm.mk
 ```
 
+To run the BL602 Simulator, start a Local Web Server and browse to __`docs/wasm.html`__
+
 # Build Log
 
 Compile the BL602 Rust Firmware...
