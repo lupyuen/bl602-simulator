@@ -52,7 +52,7 @@ extern "C" fn rust_main(  //  Declare `extern "C"` because it will be called by 
 
 /// This function is called on panic, like an assertion failure
 #[panic_handler]
-#[cfg(not(target_arch = "wasm32"))]  ////  TODO: For WebAssembly, use the default panic handler
+#[cfg(not(target_arch = "wasm32"))]              //  For WebAssembly: Use the default panic handler
 fn panic(_info: &core::panic::PanicInfo) -> ! {  //  `!` means that panic handler will never return
     //  TODO: Implement the complete panic handler like this:
     //  https://github.com/lupyuen/pinetime-rust-mynewt/blob/master/rust/app/src/lib.rs#L115-L146
