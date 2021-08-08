@@ -120,7 +120,7 @@ extern "C" fn bl_gpio_output_set(pin: u8, value: u8)
     //  If the GPIO Pin has not been configured for Output, halt
     assert!(
         unsafe { GPIO_CONFIGS[pin as usize] } == GpioConfig::Output,
-        "GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `bl_gpio_enable_output(pin, pullup, pulldown)`",
+        "GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `gpio::enable_output(pin, pullup, pulldown)` or `bl_gpio_enable_output(pin, pullup, pulldown)`. See \"Enable GPIO\" <https://lupyuen.github.io/articles/led#enable-gpio>",
         pin, unsafe { GPIO_CONFIGS[pin as usize] }
     );
 
