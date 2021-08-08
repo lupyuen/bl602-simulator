@@ -30,12 +30,29 @@ static mut SIMULATION_EVENTS: Vec<SimulationEvent> = Vec::new();
 /// ]`
 static mut EVENT_BUFFER: [u8; 1024] = [0; 1024];
 
+/// Configuration for a BL602 GPIO Pin
+#[derive(Clone, Copy, Debug, PartialEq)]
+enum GpioConfig {
+    /// GPIO Pin is unconfigured
+    Unconfigured,
+    /// GPIO Pin is configured for Input
+    Input,
+    /// GPIO Pin is configured for Output
+    Output,
+}
+
+/// Configurations for all BL602 GPIO Pins
+static mut GPIO_CONFIGS: [GpioConfig; 32] = [GpioConfig::Unconfigured; 32];
+
 /// Clear the JSON Stream of Simulation Events
 #[no_mangle]  //  Don't mangle the function name
 extern "C" fn clear_simulation_events() {
+    //  Clear the vector of Simulation Events
     unsafe {
         SIMULATION_EVENTS.clear();
     }
+    //  Show Rust Backtrace on error
+    std::env::set_var("RUST_BACKTRACE", "full");
 }
 
 /// Return the JSON Stream of Simulation Events
@@ -76,17 +93,23 @@ extern "C" fn get_simulation_events() -> *const u8 {
 
 /// Configure a GPIO Pin for Input Mode. See `bl_gpio_enable_input` in "Enable GPIO" <https://lupyuen.github.io/articles/led#enable-gpio>
 #[no_mangle]  //  Don't mangle the function name
-extern "C" fn bl_gpio_enable_input(_pin: u8, _pullup: u8, _pulldown: u8)
+extern "C" fn bl_gpio_enable_input(pin: u8, _pullup: u8, _pulldown: u8)
 -> c_int {
-    //  TODO
+    //  Remember that the GPIO Pin has been configured for Input
+    unsafe {
+        GPIO_CONFIGS[pin as usize] = GpioConfig::Input;
+    }
     0  //  Return OK
 }
 
 /// Configure a GPIO Pin for Output Mode. See `bl_gpio_enable_output` in "Enable GPIO" <https://lupyuen.github.io/articles/led#enable-gpio>
 #[no_mangle]  //  Don't mangle the function name
-extern "C" fn bl_gpio_enable_output(_pin: u8, _pullup: u8, _pulldown: u8)
+extern "C" fn bl_gpio_enable_output(pin: u8, _pullup: u8, _pulldown: u8)
 -> c_int {
-    //  TODO
+    //  Remember that the GPIO Pin has been configured for Output
+    unsafe {
+        GPIO_CONFIGS[pin as usize] = GpioConfig::Output;
+    }
     0  //  Return OK
 }
 
@@ -94,8 +117,12 @@ extern "C" fn bl_gpio_enable_output(_pin: u8, _pullup: u8, _pulldown: u8)
 #[no_mangle]  //  Don't mangle the function name
 extern "C" fn bl_gpio_output_set(pin: u8, value: u8)
 -> c_int {
-    //  TODO: If `bl_gpio_output_set` is called without 
-    //  `bl_gpio_enable_output`, we show a helpful message
+    //  If the GPIO Pin has not been configured for Output, halt
+    assert!(
+        unsafe { GPIO_CONFIGS[pin as usize] } == GpioConfig::Output,
+        "GPIO {} is {:?}, unable to set the GPIO Output Value. Please configure the GPIO for Output with `bl_gpio_enable_output(pin, pullup, pulldown)`",
+        pin, unsafe { GPIO_CONFIGS[pin as usize] }
+    );
 
     //  Add a GPIO Set Output event
     let ev = SimulationEvent::gpio_output_set { 
