@@ -1,8 +1,12 @@
 # BL602 / BL604 Simulator in WebAssembly
 
-__Try it here__: https://lupyuen.github.io/bl602-simulator/
+Try it here: https://lupyuen.github.io/bl602-simulator/
 
-__Follow the updates on Twitter__: https://twitter.com/MisterTechBlog/status/1423169766080933891
+Read the article...
+
+-   [__"Rust on RISC-V BL602: Simulated with WebAssembly"__](https://lupyuen.github.io/articles/rustsim)
+
+Follow the updates on Twitter: https://twitter.com/MisterTechBlog/status/1423169766080933891
 
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
 
