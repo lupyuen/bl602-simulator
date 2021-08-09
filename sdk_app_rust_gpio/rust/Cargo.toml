@@ -10,12 +10,12 @@ version = "0.0.1"
 [dependencies]
 bl602-sdk = "0.0.6"  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 
-# Build this module as a Rust library, not a Rust application.  We will link this library with the BL602 firmware.
+# Build this module as a Static Library, not a Rust Library.  We will link this library with the BL602 firmware.
 [lib]
 name       = "app"  # Output will be named `libapp.a`
+crate-type = ["staticlib"]
 test       = false
 bench      = false
-crate-type = ["staticlib"]
 
 # Optional features
 [features]

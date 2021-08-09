@@ -133,11 +133,16 @@ cargo build --target wasm32-unknown-emscripten
     Finished dev [unoptimized + debuginfo] target(s) in 1m 43s
 # Link the Rust Firmware and Rust Simulator Library with Emscripten
 emcc -o wasm/wasm.html \
--Wl,--start-group \
-target/wasm32-unknown-emscripten/debug/libapp.a target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
-wasm/wasm.o \
--Wl,--end-group \
--g -I include -s WASM=1 -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" -s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]" \
+    -Wl,--start-group \
+    target/wasm32-unknown-emscripten/debug/libapp.a target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
+    wasm/wasm.o \
+    -Wl,--end-group \
+	-g \
+	-I include \
+	-s WASM=1 \
+	-s DISABLE_EXCEPTION_CATCHING=0 \
+    -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" \
+	-s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 
 # Copy the WebAssembly outputs to the docs folder for GitHub Pages
 cp wasm/wasm.js   docs
