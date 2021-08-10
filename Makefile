@@ -21,7 +21,6 @@ CPP    := em++
 # TODO: Change `_rust_main` to the Rust command names.
 CCFLAGS := \
 	-g \
-	-I include \
 	-s WASM=1 \
 	-s DISABLE_EXCEPTION_CATCHING=0 \
     -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" \
@@ -60,10 +59,8 @@ $(TARGETS): % : $(filter-out $(MAINS), $(OBJ)) %.o
 
 	# Link the Rust Firmware and Rust Simulator Library with Emscripten
 	$(CC) -o $@.html \
-	-Wl,--start-group \
 	$(LIBS) \
 	$^ \
-	-Wl,--end-group \
 	$(CCFLAGS) \
 	$(LDFLAGS)
 
