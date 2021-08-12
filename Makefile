@@ -7,11 +7,12 @@ WASM_CSRCS :=
 # Build wasm app: wasm/wasm.html, wasm.js, wasm.wasm
 TARGETS:= wasm/wasm
 
-# Link with BL602 Rust Firmware compiled into WebAssembly
-# and the BL602 Rust Simulator Library
+# Link the Rust Firmware with
+# Rust Simulator Library and Rust Scripting Library
 LIBS   := \
 	target/wasm32-unknown-emscripten/debug/libapp.a \
-	target/wasm32-unknown-emscripten/debug/libbl602_simulator.a
+	target/wasm32-unknown-emscripten/debug/libbl602_simulator.a \
+	target/wasm32-unknown-emscripten/debug/libbl602_script.a
 
 # Use emscripten compiler
 CC     := emcc
@@ -23,7 +24,7 @@ CCFLAGS := \
 	-g \
 	-s WASM=1 \
 	-s DISABLE_EXCEPTION_CATCHING=0 \
-    -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_clear_simulation_events', '_get_simulation_events' ]" \
+    -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_rust_script', '_clear_simulation_events', '_get_simulation_events' ]" \
 	-s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 
 LDFLAGS := 
