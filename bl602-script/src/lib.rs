@@ -33,24 +33,20 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
     //  Show a message on the serial console
     puts("Hello from Rust Script!\r\n");
 
-    //  Notice that this is a _raw_ engine.
-    //  To do anything useful, load a few packages from `rhai::packages`.
+    //  Init the Rhai script engine
     let engine = Engine::new_raw();
-    puts("a\r\n");
+    puts("Created script engine\r\n");
 
     //  Evaluate a simple Rhai Script: 40 + 2
-    let result = engine.eval_expression::<INT>(
+    let result = engine.eval::<INT>(
         //  Rhai Script to be evaluated
-        "40 + 2"
-        /*
         r#" 
             let a = 40; 
             let b = 2;
             a + b 
         "#
-        */
     ).unwrap() as isize;
-    puts("b\r\n");
+    puts("Eval OK\r\n");
 
     //  Format the output and display it
     let mut buf = String::new();
