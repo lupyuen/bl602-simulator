@@ -34,7 +34,7 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
     puts("Hello from Rust Script!\r\n");
 
     //  Init the Rhai script engine
-    let engine = Engine::new_raw();
+    let engine = Engine::new();
     puts("Created script engine\r\n");
 
     //  Evaluate a simple Rhai Script: 40 + 2
@@ -56,3 +56,7 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
 
     //  Return to the BL602 command-line interface
 }
+
+//  TODO: Fix `emscripten_get_now`
+#[no_mangle]  //  Don't mangle the function name
+extern "C" fn _emscripten_get_now() -> f64 { 0.0 }

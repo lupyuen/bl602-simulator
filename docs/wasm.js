@@ -1152,9 +1152,9 @@ function updateGlobalBufferAndViews(buf) {
   Module['HEAPF64'] = HEAPF64 = new Float64Array(buf);
 }
 
-var STACK_BASE = 5309632,
+var STACK_BASE = 5378448,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 66752;
+    STACK_MAX = 135568;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 
@@ -4557,7 +4557,7 @@ function intArrayToString(array) {
 
 
 __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
-var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_find_matching_catch_2": ___cxa_find_matching_catch_2, "__cxa_throw": ___cxa_throw, "__cxa_uncaught_exceptions": ___cxa_uncaught_exceptions, "__resumeException": ___resumeException, "__sys_getcwd": ___sys_getcwd, "__sys_open": ___sys_open, "__sys_read": ___sys_read, "abort": _abort, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "fd_write": _fd_write, "getTempRet0": _getTempRet0, "invoke_i": invoke_i, "invoke_ii": invoke_ii, "invoke_iii": invoke_iii, "invoke_iiii": invoke_iiii, "invoke_iiiii": invoke_iiiii, "invoke_iiiiii": invoke_iiiiii, "invoke_iiiiiiiiiiiiii": invoke_iiiiiiiiiiiiii, "invoke_iiiiiiiiiiij": invoke_iiiiiiiiiiij, "invoke_iiiiiiiijiiii": invoke_iiiiiiiijiiii, "invoke_iiiiiij": invoke_iiiiiij, "invoke_iiiiij": invoke_iiiiij, "invoke_iiiij": invoke_iiiij, "invoke_iiij": invoke_iiij, "invoke_iij": invoke_iij, "invoke_iiji": invoke_iiji, "invoke_iijii": invoke_iijii, "invoke_iijj": invoke_iijj, "invoke_ij": invoke_ij, "invoke_iji": invoke_iji, "invoke_ijji": invoke_ijji, "invoke_j": invoke_j, "invoke_ji": invoke_ji, "invoke_jii": invoke_jii, "invoke_jiii": invoke_jiii, "invoke_jiiii": invoke_jiiii, "invoke_jiiiii": invoke_jiiiii, "invoke_jiij": invoke_jiij, "invoke_jij": invoke_jij, "invoke_jijj": invoke_jijj, "invoke_jj": invoke_jj, "invoke_jji": invoke_jji, "invoke_jjiii": invoke_jjiii, "invoke_v": invoke_v, "invoke_vi": invoke_vi, "invoke_vii": invoke_vii, "invoke_viii": invoke_viii, "invoke_viiii": invoke_viiii, "invoke_viiiii": invoke_viiiii, "invoke_viiiiii": invoke_viiiiii, "invoke_viiiiiii": invoke_viiiiiii, "invoke_viiiiiiii": invoke_viiiiiiii, "invoke_viiiiiiiii": invoke_viiiiiiiii, "invoke_viiiiiiiiii": invoke_viiiiiiiiii, "invoke_viiiiiiiiiii": invoke_viiiiiiiiiii, "invoke_viiiiiiiiiiii": invoke_viiiiiiiiiiii, "invoke_viiiiiiiiiiiiii": invoke_viiiiiiiiiiiiii, "invoke_viiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiii, "invoke_viiiiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiiiii, "invoke_viiiiiiiijiiiiii": invoke_viiiiiiiijiiiiii, "invoke_viiiiiiijiiiii": invoke_viiiiiiijiiiii, "invoke_viiiij": invoke_viiiij, "invoke_viiij": invoke_viiij, "invoke_viiijii": invoke_viiijii, "invoke_viij": invoke_viij, "invoke_viiji": invoke_viiji, "invoke_viijii": invoke_viijii, "invoke_viijiii": invoke_viijiii, "invoke_viijjii": invoke_viijjii, "invoke_vij": invoke_vij, "invoke_viji": invoke_viji, "invoke_vijii": invoke_vijii, "invoke_vijiii": invoke_vijiii, "invoke_vijj": invoke_vijj, "invoke_vijjii": invoke_vijjii, "invoke_vj": invoke_vj, "memory": wasmMemory, "pthread_condattr_destroy": _pthread_condattr_destroy, "pthread_condattr_init": _pthread_condattr_init, "pthread_condattr_setclock": _pthread_condattr_setclock, "pthread_mutexattr_destroy": _pthread_mutexattr_destroy, "pthread_mutexattr_init": _pthread_mutexattr_init, "pthread_mutexattr_settype": _pthread_mutexattr_settype, "pthread_rwlock_rdlock": _pthread_rwlock_rdlock, "pthread_rwlock_unlock": _pthread_rwlock_unlock, "pthread_rwlock_wrlock": _pthread_rwlock_wrlock, "setTempRet0": _setTempRet0 };
+var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_find_matching_catch_2": ___cxa_find_matching_catch_2, "__cxa_throw": ___cxa_throw, "__cxa_uncaught_exceptions": ___cxa_uncaught_exceptions, "__resumeException": ___resumeException, "__sys_getcwd": ___sys_getcwd, "__sys_open": ___sys_open, "__sys_read": ___sys_read, "abort": _abort, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "fd_write": _fd_write, "getTempRet0": _getTempRet0, "invoke_i": invoke_i, "invoke_ii": invoke_ii, "invoke_iii": invoke_iii, "invoke_iiii": invoke_iiii, "invoke_iiiii": invoke_iiiii, "invoke_iiiiii": invoke_iiiiii, "invoke_iiiiiiiiiiiiii": invoke_iiiiiiiiiiiiii, "invoke_iiiiiiiiiiij": invoke_iiiiiiiiiiij, "invoke_iiiiiiiijiiii": invoke_iiiiiiiijiiii, "invoke_iiiiiij": invoke_iiiiiij, "invoke_iiiiij": invoke_iiiiij, "invoke_iiiij": invoke_iiiij, "invoke_iiij": invoke_iiij, "invoke_iij": invoke_iij, "invoke_iiji": invoke_iiji, "invoke_iijii": invoke_iijii, "invoke_iijj": invoke_iijj, "invoke_ij": invoke_ij, "invoke_iji": invoke_iji, "invoke_ijji": invoke_ijji, "invoke_j": invoke_j, "invoke_ji": invoke_ji, "invoke_jii": invoke_jii, "invoke_jiii": invoke_jiii, "invoke_jiiii": invoke_jiiii, "invoke_jiiiii": invoke_jiiiii, "invoke_jiiiiiiiiii": invoke_jiiiiiiiiii, "invoke_jiij": invoke_jiij, "invoke_jiiji": invoke_jiiji, "invoke_jij": invoke_jij, "invoke_jijj": invoke_jijj, "invoke_jj": invoke_jj, "invoke_jji": invoke_jji, "invoke_jjiii": invoke_jjiii, "invoke_v": invoke_v, "invoke_vi": invoke_vi, "invoke_vii": invoke_vii, "invoke_viii": invoke_viii, "invoke_viiii": invoke_viiii, "invoke_viiiii": invoke_viiiii, "invoke_viiiiii": invoke_viiiiii, "invoke_viiiiiii": invoke_viiiiiii, "invoke_viiiiiiii": invoke_viiiiiiii, "invoke_viiiiiiiii": invoke_viiiiiiiii, "invoke_viiiiiiiiii": invoke_viiiiiiiiii, "invoke_viiiiiiiiiii": invoke_viiiiiiiiiii, "invoke_viiiiiiiiiiii": invoke_viiiiiiiiiiii, "invoke_viiiiiiiiiiiiii": invoke_viiiiiiiiiiiiii, "invoke_viiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiii, "invoke_viiiiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiiiii, "invoke_viiiiiiiijiiiiii": invoke_viiiiiiiijiiiiii, "invoke_viiiiiiijiiiii": invoke_viiiiiiijiiiii, "invoke_viiiij": invoke_viiiij, "invoke_viiij": invoke_viiij, "invoke_viiijii": invoke_viiijii, "invoke_viij": invoke_viij, "invoke_viiji": invoke_viiji, "invoke_viijii": invoke_viijii, "invoke_viijiii": invoke_viijiii, "invoke_viijjii": invoke_viijjii, "invoke_vij": invoke_vij, "invoke_viji": invoke_viji, "invoke_vijii": invoke_vijii, "invoke_vijiii": invoke_vijiii, "invoke_vijj": invoke_vijj, "invoke_vijjii": invoke_vijjii, "invoke_vj": invoke_vj, "invoke_vji": invoke_vji, "memory": wasmMemory, "pthread_condattr_destroy": _pthread_condattr_destroy, "pthread_condattr_init": _pthread_condattr_init, "pthread_condattr_setclock": _pthread_condattr_setclock, "pthread_mutexattr_destroy": _pthread_mutexattr_destroy, "pthread_mutexattr_init": _pthread_mutexattr_init, "pthread_mutexattr_settype": _pthread_mutexattr_settype, "pthread_rwlock_rdlock": _pthread_rwlock_rdlock, "pthread_rwlock_unlock": _pthread_rwlock_unlock, "pthread_rwlock_wrlock": _pthread_rwlock_wrlock, "setTempRet0": _setTempRet0 };
 var asm = createWasm();
 /** @type {function(...*):?} */
 var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__wasm_call_ctors");
@@ -4573,6 +4573,9 @@ var _get_simulation_events = Module["_get_simulation_events"] = createExportWrap
 
 /** @type {function(...*):?} */
 var _rust_script = Module["_rust_script"] = createExportWrapper("rust_script");
+
+/** @type {function(...*):?} */
+var __emscripten_get_now = Module["__emscripten_get_now"] = createExportWrapper("_emscripten_get_now");
 
 /** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");
@@ -4671,7 +4674,19 @@ var dynCall_iiji = Module["dynCall_iiji"] = createExportWrapper("dynCall_iiji");
 var dynCall_iiiij = Module["dynCall_iiiij"] = createExportWrapper("dynCall_iiiij");
 
 /** @type {function(...*):?} */
+var dynCall_viiiij = Module["dynCall_viiiij"] = createExportWrapper("dynCall_viiiij");
+
+/** @type {function(...*):?} */
+var dynCall_ij = Module["dynCall_ij"] = createExportWrapper("dynCall_ij");
+
+/** @type {function(...*):?} */
+var dynCall_jiiji = Module["dynCall_jiiji"] = createExportWrapper("dynCall_jiiji");
+
+/** @type {function(...*):?} */
 var dynCall_vijiii = Module["dynCall_vijiii"] = createExportWrapper("dynCall_vijiii");
+
+/** @type {function(...*):?} */
+var dynCall_iij = Module["dynCall_iij"] = createExportWrapper("dynCall_iij");
 
 /** @type {function(...*):?} */
 var dynCall_viijii = Module["dynCall_viijii"] = createExportWrapper("dynCall_viijii");
@@ -4681,6 +4696,9 @@ var dynCall_vijjii = Module["dynCall_vijjii"] = createExportWrapper("dynCall_vij
 
 /** @type {function(...*):?} */
 var dynCall_jij = Module["dynCall_jij"] = createExportWrapper("dynCall_jij");
+
+/** @type {function(...*):?} */
+var dynCall_vji = Module["dynCall_vji"] = createExportWrapper("dynCall_vji");
 
 /** @type {function(...*):?} */
 var dynCall_viiji = Module["dynCall_viiji"] = createExportWrapper("dynCall_viiji");
@@ -4704,16 +4722,10 @@ var dynCall_viiijii = Module["dynCall_viiijii"] = createExportWrapper("dynCall_v
 var dynCall_iiij = Module["dynCall_iiij"] = createExportWrapper("dynCall_iiij");
 
 /** @type {function(...*):?} */
-var dynCall_iij = Module["dynCall_iij"] = createExportWrapper("dynCall_iij");
-
-/** @type {function(...*):?} */
 var dynCall_viji = Module["dynCall_viji"] = createExportWrapper("dynCall_viji");
 
 /** @type {function(...*):?} */
 var dynCall_vijj = Module["dynCall_vijj"] = createExportWrapper("dynCall_vijj");
-
-/** @type {function(...*):?} */
-var dynCall_ij = Module["dynCall_ij"] = createExportWrapper("dynCall_ij");
 
 /** @type {function(...*):?} */
 var dynCall_viiiiiiijiiiii = Module["dynCall_viiiiiiijiiiii"] = createExportWrapper("dynCall_viiiiiiijiiiii");
@@ -4737,13 +4749,13 @@ var dynCall_iiiiij = Module["dynCall_iiiiij"] = createExportWrapper("dynCall_iii
 var dynCall_iiiiiiiijiiii = Module["dynCall_iiiiiiiijiiii"] = createExportWrapper("dynCall_iiiiiiiijiiii");
 
 /** @type {function(...*):?} */
+var dynCall_jiiiiiiiiii = Module["dynCall_jiiiiiiiiii"] = createExportWrapper("dynCall_jiiiiiiiiii");
+
+/** @type {function(...*):?} */
 var dynCall_vijii = Module["dynCall_vijii"] = createExportWrapper("dynCall_vijii");
 
 /** @type {function(...*):?} */
 var dynCall_iijii = Module["dynCall_iijii"] = createExportWrapper("dynCall_iijii");
-
-/** @type {function(...*):?} */
-var dynCall_viiiij = Module["dynCall_viiiij"] = createExportWrapper("dynCall_viiiij");
 
 /** @type {function(...*):?} */
 var dynCall_iji = Module["dynCall_iji"] = createExportWrapper("dynCall_iji");
@@ -5046,6 +5058,17 @@ function invoke_jii(index,a1,a2) {
   }
 }
 
+function invoke_vji(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    dynCall_vji(index,a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_iij(index,a1,a2,a3) {
   var sp = stackSave();
   try {
@@ -5215,6 +5238,17 @@ function invoke_ij(index,a1,a2) {
   var sp = stackSave();
   try {
     return dynCall_ij(index,a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_jiiji(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return dynCall_jiiji(index,a1,a2,a3,a4,a5);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -5424,6 +5458,17 @@ function invoke_ijji(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
     return dynCall_ijji(index,a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_jiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
+  var sp = stackSave();
+  try {
+    return dynCall_jiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;

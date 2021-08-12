@@ -24,7 +24,7 @@ CCFLAGS := \
 	-g \
 	-s WASM=1 \
 	-s DISABLE_EXCEPTION_CATCHING=0 \
-    -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_rust_script', '_clear_simulation_events', '_get_simulation_events' ]" \
+    -s "EXPORTED_FUNCTIONS=[ '_rust_main', '_rust_script', '_clear_simulation_events', '_get_simulation_events', '__emscripten_get_now' ]" \
 	-s "EXTRA_EXPORTED_RUNTIME_METHODS=[ 'cwrap', 'allocate', 'intArrayFromString', 'UTF8ToString' ]"
 
 LDFLAGS := 
