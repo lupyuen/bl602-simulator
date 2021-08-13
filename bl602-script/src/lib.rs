@@ -22,7 +22,7 @@ use bl602_sdk::{       //  Rust Wrapper for BL602 IoT SDK
     String,            //  Strings (limited to 64 chars)
 };
 
-/// This function will be called by the BL602 command-line interface
+/// This function will be called by WebAssembly to run a script
 #[no_mangle]                 //  Don't mangle the function name
 extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called by BL602 firmware
     _result: *mut u8,        //  Result to be returned to command-line interface (char *)
@@ -59,8 +59,6 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
     write!(buf, "Result of Rhai Script: {}\r\n", result)
         .expect("buf overflow");
     puts(&buf);
-
-    //  Return to the BL602 command-line interface
 }
 
 /// Rhai Stub for Enable GPIO Output
