@@ -25,3 +25,29 @@ for i in range(0, 10) {
     time_delay(1000);
 }
 ```
+
+Compare the above Rhai Script with the equivalent Rust Firmware: [sdk_app_rust_gpio/rust/src/lib.rs](../sdk_app_rust_gpio/rust/src/lib.rs)
+
+```rust
+//  PineCone Blue LED is connected on BL602 GPIO 11
+const LED_GPIO: u8 = 11;  //  `u8` is 8-bit unsigned integer
+
+//  Configure the LED GPIO for output (instead of input)
+gpio::enable_output(LED_GPIO, 0, 0)        //  No pullup, no pulldown
+    .expect("GPIO enable output failed");  //  Halt on error
+
+//  Blink the LED 5 times
+for i in 0..10 {  //  Iterates 10 times from 0 to 9 (`..` excludes 10)
+
+    //  Toggle the LED GPIO between 0 (on) and 1 (off)
+    gpio::output_set(  //  Set the GPIO output (from BL602 GPIO HAL)
+        LED_GPIO,      //  GPIO pin number
+        i % 2          //  0 for low, 1 for high
+    ).expect("GPIO output failed");  //  Halt on error
+
+    //  Sleep 1 second
+    time_delay(                   //  Sleep by number of ticks (from NimBLE Porting Layer)
+        time_ms_to_ticks32(1000)  //  Convert 1,000 milliseconds to ticks (from NimBLE Porting Layer)
+    );
+}
+```
