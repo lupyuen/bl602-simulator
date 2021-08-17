@@ -45,9 +45,8 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
     //  Register our module as a Static Module
     engine.register_static_module("gpio", module.into());
 
-    //  Previously: Register our functions with Rhai
-    //  engine.register_fn("gpio_enable_output", gpio_enable_output);
-    //  engine.register_fn("gpio_output_set",    gpio_output_set);
+    //  Register our functions with Rhai
+    engine.register_fn("time_delay", time_delay);
 
     //  Evaluate a Rhai Script
     let result = engine.eval::<INT>(
@@ -70,7 +69,7 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
                 );
 
                 //  Sleep 1 second
-                //  time_delay(1000);
+                time_delay(1000);
             }
 
             //  Evaluate an expression
@@ -139,6 +138,28 @@ mod gpio {
             //  TODO: Throw exception in case of error
             //  match res { 0 => Ok(()), _ => Err(BlError::from(res)), }
         }
+    }
+}
+
+/// Rhai Stub for Time Delay
+/// TODO: Modified parameter from u32 to i32
+pub fn time_delay(
+    ticks: i32  //  Number of ticks to sleep
+) {
+    //  Format the output and display it
+    let mut buf = String::new();
+    write!(buf, "time_delay: {}\r\n", ticks)
+        .expect("buf overflow");
+    puts(&buf);
+
+    extern "C" {  //  Import C Function
+        /// Sleep for the specified number of system ticks (from NimBLE Porting Layer)
+        fn ble_npl_time_delay(ticks: u32);
+    }
+
+    //  Call the C function
+    unsafe {  //  Flag this code as unsafe because we're calling a C function
+        ble_npl_time_delay(ticks as u32);
     }
 }
 
