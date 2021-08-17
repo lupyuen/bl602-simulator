@@ -53,8 +53,27 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
     let result = engine.eval::<INT>(
         //  Rhai Script to be evaluated
         r#" 
-            gpio::enable_output(11, 0, 0);
-            gpio::output_set(11, 0);
+            //  Blink the LED:
+            //  PineCone Blue LED is connected on BL602 GPIO 11
+            let LED_GPIO = 11;
+
+            //  Configure the LED GPIO for output (instead of input)
+            gpio::enable_output(LED_GPIO, 0, 0);
+
+            //  Blink the LED 5 times
+            for i in range(0, 10) {
+
+                //  Toggle the LED GPIO between 0 (on) and 1 (off)
+                gpio::output_set(
+                    LED_GPIO, 
+                    i % 2
+                );
+
+                //  Sleep 1 second
+                //  time_delay(1000);
+            }
+
+            //  Evaluate an expression
             let a = 40; 
             let b = 2;
             a + b 
