@@ -22,11 +22,11 @@ Let's __Simulate BL602 / BL604 Rust Firmware__ in a Web Browser with __WebAssemb
 
 1.  We __compile to WebAssembly__ the Rust Firmware and Rust Wrapper
 
-1.  In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Stub Functions__
+1.  In WebAssembly we __intercept calls to BL602 IoT SDK__ with __Shim Functions__
 
     (Like for the BL602 GPIO HAL)
 
-    - [__Rust Stub Functions for BL602 Simulator__](bl602-simulator/src/lib.rs)
+    - [__Rust Shim Functions for BL602 Simulator__](bl602-simulator/src/lib.rs)
 
 1.  Add a __Simulator UI (HTML + JavaScript)__ to simulate a __PineCone BL602__ or __PineDio Stack BL604__...
 
@@ -74,7 +74,7 @@ We might be able to __Simulate C Firmware__ too, if we...
     
 - Tweak the BL602 C Firmware to __build with Emscripten__
 
-- And call the __Stub Functions__
+- And call the __Shim Functions__
 
 # Build BL602 / BL604 Rust Firmware for WebAssembly
 

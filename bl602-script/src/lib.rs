@@ -90,7 +90,7 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
 /// GPIO Module will be exported to Rhai as a Static Module
 #[export_module]
 mod gpio {
-    /// Rhai Stub for Enable GPIO Output
+    /// Rhai Shim for Enable GPIO Output
     /// TODO: Modified parameters from u8 to i32
     pub fn enable_output(pin: i32, pullup: i32, pulldown: i32) {
         //  Format the output and display it
@@ -116,7 +116,7 @@ mod gpio {
         }
     }
 
-    /// Rhai Stub for Set GPIO Output
+    /// Rhai Shim for Set GPIO Output
     /// TODO: Modified parameters from u8 to i32
     pub fn output_set(pin: i32, value: i32) {
         //  Format the output and display it
@@ -141,7 +141,7 @@ mod gpio {
     }
 }
 
-/// Rhai Stub for Time Delay
+/// Rhai Shim for Time Delay
 /// TODO: Modified parameter from u32 to i32
 pub fn time_delay(
     ticks: i32  //  Number of ticks to sleep
