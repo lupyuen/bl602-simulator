@@ -51,3 +51,7 @@ for i in 0..10 {  //  Iterates 10 times from 0 to 9 (`..` excludes 10)
     );
 }
 ```
+
+The Rhai Scripting Engine shall be integrated with Blockly to allow drag-and-drop scripting: https://github.com/lupyuen2/blockly-bl602
+
+To run Rhai Scripts on BL602, we shall transcode the script to uLisp: https://lupyuen.github.io/articles/rustsim#appendix-rhai-scripts-on-bl602
