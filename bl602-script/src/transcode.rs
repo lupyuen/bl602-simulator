@@ -5,7 +5,6 @@ use rhai::{
     ASTNode,
     Expr,
     FnCallExpr,
-    NamespaceRef,
     Position,
     Stmt,
 };
