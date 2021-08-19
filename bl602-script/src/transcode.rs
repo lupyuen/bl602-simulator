@@ -43,8 +43,8 @@ fn transcode_node(nodes: &[ASTNode]) -> bool {
     
     //  Transcode the Node: Statement or Expression
     match node {
-        ASTNode::Stmt(stmt) => transcode_stmt(stmt),
-        ASTNode::Expr(expr) => transcode_expr(expr),
+        ASTNode::Stmt(stmt) => { transcode_stmt(stmt); }
+        ASTNode::Expr(expr) => { transcode_expr(expr); }
     }
 
     //  Return true to walk the next node in the tree
@@ -67,7 +67,7 @@ fn transcode_stmt(stmt: &Stmt) {
                 ...
             )
         */    
-        Stmt::Var(_expr, ident, _, _) => println!(
+        Stmt::Var(expr, ident, _, _) => println!(
             r#"
             ( let* 
                 (( {} {} ))
@@ -75,7 +75,7 @@ fn transcode_stmt(stmt: &Stmt) {
             )
             "#,
             ident.name,
-            "TODO_expr",
+            transcode_expr(expr),
             "TODO_body"
         ),
 
@@ -103,14 +103,22 @@ fn transcode_stmt(stmt: &Stmt) {
         becomes...
         ( bl_gpio_enable_output 11 0 0 )
         */
-        Stmt::FnCall(expr, _) => transcode_fncall(expr),
+        Stmt::FnCall(expr, _) => println!(
+            r#"
+            {}
+            "#,
+            transcode_fncall(expr)
+        ),
         _ => println!("Unknown stmt: {:#?}", stmt)
     }
 }
 
 /// Transcode a Rhai Expression to uLisp
-fn transcode_expr(expr: &Expr) {
+fn transcode_expr(expr: &Expr) -> String {
     match expr {
+        //  Integers become themselves
+        Expr::IntegerConstant(i, _) => format!("{}", i),
+
         /* TODO: 
             FnCallExpr {
                 namespace: Some(
@@ -133,12 +141,12 @@ fn transcode_expr(expr: &Expr) {
             ( bl_gpio_enable_output 11 0 0 )
         */   
         Expr::FnCall(expr, _) => transcode_fncall(expr),
-        _ => println!("Unknown expr: {:#?}", expr)
+        _ => format!("Unknown expr: {:#?}", expr)
     }
 }
 
 /// Transcode a Rhai Function Call to uLisp
-fn transcode_fncall(_expr: &FnCallExpr) {
+fn transcode_fncall(expr: &FnCallExpr) -> String {
     /* TODO: 
         FnCallExpr {
             namespace: Some(
@@ -160,6 +168,7 @@ fn transcode_fncall(_expr: &FnCallExpr) {
         becomes...
         ( bl_gpio_enable_output 11 0 0 )
     */   
+    format!("{:#?}", expr)
 }
 
 /* Output Log:
