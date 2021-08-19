@@ -3,7 +3,9 @@
 use rhai::{
     AST,
     ASTNode,
+    Expr,
     Position,
+    Stmt,
 };
 
 /// Transcode the compiled Rhai Script to uLisp
@@ -14,12 +16,6 @@ pub fn transcode(ast: &AST) {
 
 /// Transcode the Rhai AST Node to uLisp
 fn transcode_node(nodes: &[ASTNode]) -> bool {
-    //  Testing: Stop after a few nodes
-    unsafe {
-        static mut COUNT: u32 = 0;
-        COUNT += 1;
-        if COUNT > 10 { return false }
-    }    
     //  We take the root node, ignore the subnodes
     let node = &nodes[0];
 
@@ -37,21 +33,32 @@ fn transcode_node(nodes: &[ASTNode]) -> bool {
         println!("Node: {:#?}", node);
     }
 
-    //  Transcode the Node: Expression or Statement
+    //  Testing: Stop after a few nodes
+    unsafe {
+        static mut COUNT: u32 = 0;
+        COUNT += 1;
+        if COUNT > 10 { return false }
+    }    
+    
+    //  Transcode the Node: Statement or Expression
     match node {
-        ASTNode::Stmt(_stmt) => {}
-        ASTNode::Expr(_expr) => {}
+        ASTNode::Stmt(stmt) => transcode_stmt(stmt),
+        ASTNode::Expr(expr) => transcode_expr(expr),
     }
 
+    //  Return true to walk the next node in the tree
+    true
+}
+
+/// Transcode a Rhai Statement to uLisp
+fn transcode_stmt(_stmt: &Stmt) {
     /* TOOD: 
-    Stmt(
-        Var(
-            11 @ 4:24,
-            "LED_GPIO" @ 4:13,
-            (),
-            4:9,
-        ),
-    )
+    Var(
+        11 @ 4:24,
+        "LED_GPIO" @ 4:13,
+        (),
+        4:9,
+    ),
     becomes...
     ( let* 
         (( LED_GPIO 11 ))
@@ -60,33 +67,33 @@ fn transcode_node(nodes: &[ASTNode]) -> bool {
     */    
 
     /* TODO: 
-    Stmt(
-        FnCall(
-            FnCallExpr {
-                namespace: Some(
-                    gpio,
-                ),
-                hashes: 4301736447638837139,
-                args: [
-                    Variable(LED_GPIO #1) @ 7:29,
-                    StackSlot(0) @ 7:39,
-                    StackSlot(1) @ 7:42,
-                ],
-                constants: [
-                    0,
-                    0,
-                ],
-                name: "enable_output",
-                capture: false,
-            },
-            7:15,
-        ),
-    )
+    FnCall(
+        FnCallExpr {
+            namespace: Some(
+                gpio,
+            ),
+            hashes: 4301736447638837139,
+            args: [
+                Variable(LED_GPIO #1) @ 7:29,
+                StackSlot(0) @ 7:39,
+                StackSlot(1) @ 7:42,
+            ],
+            constants: [
+                0,
+                0,
+            ],
+            name: "enable_output",
+            capture: false,
+        },
+        7:15,
+    ),
     becomes...
     ( bl_gpio_enable_output 11 0 0 )
     */   
+}
 
-    true
+/// Transcode a Rhai Expression to uLisp
+fn transcode_expr(_expr: &Expr) {
 }
 
 /* Output Log:
@@ -104,7 +111,7 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 216275462078594943,
+            hashes: 8362387678790912019,
             args: [
                 Variable(LED_GPIO #1) @ 7:29,
                 StackSlot(0) @ 7:39,
@@ -124,7 +131,7 @@ Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 3173820496823393639,
+            hash: 2948048660127881896,
             args: [
                 StackSlot(0) @ 10:24,
                 StackSlot(1) @ 10:27,
@@ -143,12 +150,12 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 15100777281115982861,
+                        hashes: 15138393111301709341,
                         args: [
                             Variable(LED_GPIO #2) @ 14:17,
                             FnCall {
                                 name: "%",
-                                hash: 9914832268374762033 (native only),
+                                hash: 17103924447002008955 (native only),
                                 args: [
                                     Variable(i #1) @ 15:17,
                                     StackSlot(0) @ 15:21,
@@ -167,7 +174,7 @@ Node: Stmt(
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 16962790537791066994,
+                        hashes: 7876674063736586130,
                         args: [
                             StackSlot(0) @ 19:24,
                         ],
@@ -182,6 +189,38 @@ Node: Stmt(
             ] @ 10:31,
         ),
         10:9,
+    ),
+)
+Node: Stmt(
+    Var(
+        40 @ 23:17,
+        "a" @ 23:13,
+        (),
+        23:9,
+    ),
+)
+Node: Stmt(
+    Var(
+        2 @ 24:17,
+        "b" @ 24:13,
+        (),
+        24:9,
+    ),
+)
+Node: Stmt(
+    FnCall(
+        FnCallExpr {
+            namespace: None,
+            hashes: 7566276036493640333 (native only),
+            args: [
+                Variable(a #2) @ 25:9,
+                Variable(b #1) @ 25:13,
+            ],
+            constants: [],
+            name: "+",
+            capture: false,
+        },
+        25:11,
     ),
 )
 */
