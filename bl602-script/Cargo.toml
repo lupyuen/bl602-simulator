@@ -9,10 +9,10 @@ version = "0.0.1"
 # External Rust libraries used by this module.  See crates.io.
 [dependencies]
 wee_alloc = { version = "0.4.5", features = [ "static_array_backend" ], default_features = false }  # WEE Allocator: https://crates.io/crates/wee_alloc
-rhai      = { version = "1.0.0", features = [ "only_i32", "no_float" ], default_features = false }  # Rhai Scripting Engine: https://crates.io/crates/rhai
+rhai      = { version = "1.0.2", features = [ "only_i32", "no_float" ], default_features = false }  # Rhai Scripting Engine: https://crates.io/crates/rhai
 bl602-sdk = "0.0.6"  # Rust Wrapper for BL602 IoT SDK: https://crates.io/crates/bl602-sdk
 
-# Build this module as a Static Library, not a Rust Library.  We will link this library with the BL602 firmware.
+# Build this module as a Static Library, not a Rust Library.  We will link this library with Emscripten.
 [lib]
 name       = "bl602_script"  # Output will be named `libbl602_script.a`
 crate-type = ["staticlib"]

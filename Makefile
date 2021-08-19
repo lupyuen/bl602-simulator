@@ -56,6 +56,7 @@ $(OBJ): %.o : %.c $(DEPS)
 # TODO: Copy the WebAssembly outputs to docs folder manually in Windows
 $(TARGETS): % : $(filter-out $(MAINS), $(OBJ)) %.o
 	# Build the Rust Firmware and Rust Simulator Library
+	rustup default nightly
 	cargo build --target wasm32-unknown-emscripten
 
 	# Link the Rust Firmware and Rust Simulator Library with Emscripten
