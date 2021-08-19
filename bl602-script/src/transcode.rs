@@ -4,6 +4,7 @@ use rhai::{
     AST,
     ASTNode,
     Expr,
+    FnCallExpr,
     Position,
     Stmt,
 };
@@ -51,23 +52,94 @@ fn transcode_node(nodes: &[ASTNode]) -> bool {
 }
 
 /// Transcode a Rhai Statement to uLisp
-fn transcode_stmt(_stmt: &Stmt) {
-    /* TOOD: 
-    Var(
-        11 @ 4:24,
-        "LED_GPIO" @ 4:13,
-        (),
-        4:9,
-    ),
-    becomes...
-    ( let* 
-        (( LED_GPIO 11 ))
-        ...
-    )
-    */    
+fn transcode_stmt(stmt: &Stmt) {
+    match stmt {
+        /* TODO: 
+            Var(
+                11 @ 4:24,
+                "LED_GPIO" @ 4:13,
+                (),
+                4:9,
+            ),
+            becomes...
+            ( let* 
+                (( LED_GPIO 11 ))
+                ...
+            )
+        */    
+        Stmt::Var(_expr, ident, _, _) => println!(
+            r#"
+            ( let* 
+                (( {} {} ))
+                {}
+            )
+            "#,
+            ident.name,
+            "TODO_expr",
+            "TODO_body"
+        ),
 
+        /* TODO: 
+        FnCall(
+            FnCallExpr {
+                namespace: Some(
+                    gpio,
+                ),
+                hashes: 4301736447638837139,
+                args: [
+                    Variable(LED_GPIO #1) @ 7:29,
+                    StackSlot(0) @ 7:39,
+                    StackSlot(1) @ 7:42,
+                ],
+                constants: [
+                    0,
+                    0,
+                ],
+                name: "enable_output",
+                capture: false,
+            },
+            7:15,
+        ),
+        becomes...
+        ( bl_gpio_enable_output 11 0 0 )
+        */
+        Stmt::FnCall(expr, _) => transcode_fncall(expr),
+        _ => println!("Unknown stmt: {:#?}", stmt)
+    }
+}
+
+/// Transcode a Rhai Expression to uLisp
+fn transcode_expr(expr: &Expr) {
+    match expr {
+        /* TODO: 
+            FnCallExpr {
+                namespace: Some(
+                    gpio,
+                ),
+                hashes: 4301736447638837139,
+                args: [
+                    Variable(LED_GPIO #1) @ 7:29,
+                    StackSlot(0) @ 7:39,
+                    StackSlot(1) @ 7:42,
+                ],
+                constants: [
+                    0,
+                    0,
+                ],
+                name: "enable_output",
+                capture: false,
+            }
+            becomes...
+            ( bl_gpio_enable_output 11 0 0 )
+        */   
+        Expr::FnCall(expr, _) => transcode_fncall(expr),
+        _ => println!("Unknown expr: {:#?}", expr)
+    }
+}
+
+/// Transcode a Rhai Function Call to uLisp
+fn transcode_fncall(_expr: &FnCallExpr) {
     /* TODO: 
-    FnCall(
         FnCallExpr {
             namespace: Some(
                 gpio,
@@ -84,16 +156,10 @@ fn transcode_stmt(_stmt: &Stmt) {
             ],
             name: "enable_output",
             capture: false,
-        },
-        7:15,
-    ),
-    becomes...
-    ( bl_gpio_enable_output 11 0 0 )
+        }
+        becomes...
+        ( bl_gpio_enable_output 11 0 0 )
     */   
-}
-
-/// Transcode a Rhai Expression to uLisp
-fn transcode_expr(_expr: &Expr) {
 }
 
 /* Output Log:
