@@ -62,6 +62,8 @@ To run Rhai Scripts on BL602, we shall transcode the script to uLisp: https://lu
 
 [Follow the updates in this Twitter Thread](https://twitter.com/MisterTechBlog/status/1427758328004759552)
 
+Transcoder is located here: [src/transcode.rs](src/transcode.rs)
+
 This Rhai Script...
 
 ```rust
