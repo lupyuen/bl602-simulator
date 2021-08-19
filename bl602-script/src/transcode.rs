@@ -77,39 +77,17 @@ fn transcode_stmt(stmt: &Stmt) {
             "#,
             ident.name,
             transcode_expr(expr),
-            "TODO_body"
+            "TODO_body"  //  TODO
         ),
 
-        /* Function Call:
-            FnCall(
-                FnCallExpr {
-                    namespace: Some(
-                        gpio,
-                    ),
-                    hashes: 4301736447638837139,
-                    args: [
-                        Variable(LED_GPIO #1) @ 7:29,
-                        StackSlot(0) @ 7:39,
-                        StackSlot(1) @ 7:42,
-                    ],
-                    constants: [
-                        0,
-                        0,
-                    ],
-                    name: "enable_output",
-                    capture: false,
-                },
-                7:15,
-            ),
-            becomes...
-            ( bl_gpio_enable_output 11 0 0 )
-        */
+        //  Function Call
         Stmt::FnCall(expr, _) => println!(
             r#"
             {}
             "#,
             transcode_fncall(expr)
         ),
+
         _ => println!("Unknown stmt: {:#?}", stmt)
     }
 }
@@ -120,34 +98,20 @@ fn transcode_expr(expr: &Expr) -> String {
         //  Integers become themselves
         Expr::IntegerConstant(i, _) => format!("{}", i),
 
-        /* Function Call: 
-            FnCallExpr {
-                namespace: Some(
-                    gpio,
-                ),
-                hashes: 4301736447638837139,
-                args: [
-                    Variable(LED_GPIO #1) @ 7:29,
-                    StackSlot(0) @ 7:39,
-                    StackSlot(1) @ 7:42,
-                ],
-                constants: [
-                    0,
-                    0,
-                ],
-                name: "enable_output",
-                capture: false,
-            }
-            becomes...
-            ( bl_gpio_enable_output 11 0 0 )
-        */   
+        //  Function Call
         Expr::FnCall(expr, _) => transcode_fncall(expr),
+
         _ => format!("Unknown expr: {:#?}", expr)
     }
 }
 
 /// Transcode a Rhai Function Call to uLisp
 fn transcode_fncall(expr: &FnCallExpr) -> String {
+    //  Compose namespace like `bl_gpio_` or ``
+    let namespace = match &expr.namespace {
+        Some(ns) => format!("bl_{:#?}_", ns),  //  TODO
+        None => "".to_string()
+    };
     /* Function Call:
         FnCallExpr {
             namespace: Some(
@@ -170,10 +134,10 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
         ( bl_gpio_enable_output 11 0 0 )
     */   
     format!(
-        "( bl_{:#?}_{} {:#?} )", 
-        expr.namespace.as_ref().unwrap_or(&NamespaceRef::default()),
-        expr.name,
-        expr.args
+        "( {}{} {:#?} )",
+        namespace,  //  `bl_gpio_` or ``
+        expr.name,  //  `enable_output`
+        expr.args   //  TODO
     )
 }
 
