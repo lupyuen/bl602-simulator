@@ -2,6 +2,7 @@
 
 /// Transcode the compiled Rhai Script to uLisp
 pub fn transcode(ast: &rhai::AST) {
+    //  Walk the nodes in the Rhai Abstract Syntax Tree
     ast.walk(&mut transcode_node);
 }
 
