@@ -7,7 +7,7 @@ let simulation_events = [];
 
 /// Wait for emscripten to be initialised
 Module.onRuntimeInitialized = function() {
-  // Load the simulator pic and render it
+  //  Load the simulator pic and render it
   const image = new Image();
   image.onload = renderSimulator;  //  Draw when image has loaded
   image.src = 'pinecone.png';      //  Image to be loaded
@@ -25,6 +25,12 @@ function renderSimulator() {
 
   //  Draw the image to fill the canvas
   ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+
+  //  Testing: Run the rust_script command
+  if (window.location.href.indexOf("rust_script") >= 0) {
+    document.getElementById("input").value = "rust_script";
+    runScript();
+  }
 }
 
 /// Run the command in the input box

@@ -69,11 +69,12 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
         a + b 
     "#;
 
-    // Compile Rhai Script to an Abstract Syntax Tree
+    //  Compile Rhai Script to an Abstract Syntax Tree
     let ast = engine.compile(script)
         .unwrap();
     println!("AST: {:#?}", ast);
 
+    //  Transcode the Rhai Abstract Syntax Tree to uLisp
     transcode::transcode(&ast);
 
     //  Evaluate the compiled Rhai Script

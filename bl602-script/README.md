@@ -64,7 +64,19 @@ To run Rhai Scripts on BL602, we shall transcode the script to uLisp: https://lu
 
 Transcoder is located here: [src/transcode.rs](src/transcode.rs)
 
-This Rhai Script...
+This code from [src/lib.rs](src/lib.rs)...
+
+```rust
+//  Compile Rhai Script to an Abstract Syntax Tree
+let ast = engine.compile(script)
+    .unwrap();
+println!("AST: {:#?}", ast);
+
+//  Transcode the Rhai Abstract Syntax Tree to uLisp
+transcode::transcode(&ast);
+```
+
+Compiles this Rhai Script...
 
 ```rust
 //  Blink the LED:
@@ -88,7 +100,7 @@ for i in range(0, 10) {
 }
 ```
 
-Compiles to the Abstract Syntax Tree (AST) below. We shall walk through the AST and transcode it to uLisp.
+To the Abstract Syntax Tree (AST) below. Then we walk the AST nodes and transcode them to uLisp.
 
 ```text
 AST {
