@@ -5,6 +5,7 @@ use rhai::{
     ASTNode,
     Expr,
     FnCallExpr,
+    NamespaceRef,
     Position,
     Stmt,
 };
@@ -54,7 +55,7 @@ fn transcode_node(nodes: &[ASTNode]) -> bool {
 /// Transcode a Rhai Statement to uLisp
 fn transcode_stmt(stmt: &Stmt) {
     match stmt {
-        /* TODO: 
+        /* Let or Const Statement: 
             Var(
                 11 @ 4:24,
                 "LED_GPIO" @ 4:13,
@@ -79,29 +80,29 @@ fn transcode_stmt(stmt: &Stmt) {
             "TODO_body"
         ),
 
-        /* TODO: 
-        FnCall(
-            FnCallExpr {
-                namespace: Some(
-                    gpio,
-                ),
-                hashes: 4301736447638837139,
-                args: [
-                    Variable(LED_GPIO #1) @ 7:29,
-                    StackSlot(0) @ 7:39,
-                    StackSlot(1) @ 7:42,
-                ],
-                constants: [
-                    0,
-                    0,
-                ],
-                name: "enable_output",
-                capture: false,
-            },
-            7:15,
-        ),
-        becomes...
-        ( bl_gpio_enable_output 11 0 0 )
+        /* Function Call:
+            FnCall(
+                FnCallExpr {
+                    namespace: Some(
+                        gpio,
+                    ),
+                    hashes: 4301736447638837139,
+                    args: [
+                        Variable(LED_GPIO #1) @ 7:29,
+                        StackSlot(0) @ 7:39,
+                        StackSlot(1) @ 7:42,
+                    ],
+                    constants: [
+                        0,
+                        0,
+                    ],
+                    name: "enable_output",
+                    capture: false,
+                },
+                7:15,
+            ),
+            becomes...
+            ( bl_gpio_enable_output 11 0 0 )
         */
         Stmt::FnCall(expr, _) => println!(
             r#"
@@ -119,7 +120,7 @@ fn transcode_expr(expr: &Expr) -> String {
         //  Integers become themselves
         Expr::IntegerConstant(i, _) => format!("{}", i),
 
-        /* TODO: 
+        /* Function Call: 
             FnCallExpr {
                 namespace: Some(
                     gpio,
@@ -147,7 +148,7 @@ fn transcode_expr(expr: &Expr) -> String {
 
 /// Transcode a Rhai Function Call to uLisp
 fn transcode_fncall(expr: &FnCallExpr) -> String {
-    /* TODO: 
+    /* Function Call:
         FnCallExpr {
             namespace: Some(
                 gpio,
@@ -168,7 +169,12 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
         becomes...
         ( bl_gpio_enable_output 11 0 0 )
     */   
-    format!("{:#?}", expr)
+    format!(
+        "( bl_{:#?}_{} {:#?} )", 
+        expr.namespace.as_ref().unwrap_or(&NamespaceRef::default()),
+        expr.name,
+        expr.args
+    )
 }
 
 /* Output Log:
