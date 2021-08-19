@@ -9,6 +9,8 @@ extern crate wee_alloc;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+mod transcode;
+
 //  Import Libraries
 use rhai::{            //  Rhai Scripting Engine
     Engine, 
@@ -71,6 +73,8 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
     let ast = engine.compile(script)
         .unwrap();
     println!("AST: {:#?}", ast);
+
+    transcode::transcode(&ast);
 
     //  Evaluate the compiled Rhai Script
     let result: i32 = engine.eval_ast(&ast)
