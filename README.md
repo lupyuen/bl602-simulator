@@ -97,6 +97,25 @@ make
 # Produces outputs in the `docs` folder: wasm.js, wasm.wasm
 ```
 
+If the build fails with...
+
+```text
+cargo build --target wasm32-unknown-emscripten
+   Compiling rhai v1.0.2
+error[E0432]: unresolved import `ast::FloatWrapper`
+   --> <RHAI PATH>/rhai-1.0.2/src/lib.rs:230:44
+    |
+230 |     ASTNode, BinaryExpr, CustomExpr, Expr, FloatWrapper, FnCallExpr, FnCallHashes, Ident,
+    |                                            ^^^^^^^^^^^^ no `FloatWrapper` in `ast`
+```
+
+Edit `<RHAI PATH>/rhai-1.0.2/src/lib.rs` and remove `FloatWrapper` from line 230...
+
+```rust
+pub use ast::{
+    ASTNode, BinaryExpr, CustomExpr, Expr, /* FloatWrapper, */ FnCallExpr, FnCallHashes, Ident,
+```
+
 # Run BL602 / BL604 Simulator with WebAssembly
 
 To run the BL602 Simulator...
