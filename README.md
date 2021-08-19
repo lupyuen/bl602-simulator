@@ -1,5 +1,7 @@
 # BL602 / BL604 Simulator in WebAssembly
 
+__This is the `transcode` branch that transcodes Rhai to uLisp__
+
 Try it here: https://lupyuen.github.io/bl602-simulator/
 
 Read the article...
