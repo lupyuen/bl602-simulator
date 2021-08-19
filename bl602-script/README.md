@@ -2,6 +2,8 @@
 
 Based on Rhai Scripting Engine: https://rhai.rs/book
 
+[Follow the updates in this Twitter Thread](https://twitter.com/MisterTechBlog/status/1427758328004759552)
+
 Here's a Rhai Script that works with BL602 Simulator: [src/lib.rs](src/lib.rs)
 
 ```rust
@@ -57,6 +59,8 @@ The Rhai Scripting Engine shall be integrated with Blockly to allow drag-and-dro
 To run Rhai Scripts on BL602, we shall transcode the script to uLisp: https://lupyuen.github.io/articles/rustsim#appendix-rhai-scripts-on-bl602
 
 # Transcode Rhai Script to uLisp
+
+[Follow the updates in this Twitter Thread](https://twitter.com/MisterTechBlog/status/1427758328004759552)
 
 This Rhai Script...
 
