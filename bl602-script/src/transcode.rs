@@ -97,6 +97,9 @@ fn transcode_expr(expr: &Expr) -> String {
         //  Integers become themselves
         Expr::IntegerConstant(i, _) => format!("{}", i),
 
+        //  Variables become their names
+        Expr::Variable(_, _, var) => format!("{}", var.2),
+
         //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
         Expr::FnCall(expr, _) => transcode_fncall(expr),
 
