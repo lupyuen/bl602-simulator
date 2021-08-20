@@ -1,5 +1,6 @@
 //!  Transcode BL602 Rhai Script to uLisp
 
+use std::convert::TryInto;
 use rhai::{
     AST,
     ASTNode,
@@ -105,13 +106,18 @@ fn transcode_stmt(stmt: &Stmt) {
                 ...
             )
         */
-        Stmt::For(_expr, id_counter, _) => {
-            //  TODO: Allow Lower Limit to be non-zero
+        Stmt::For(expr, id_counter, _) => {
             //  TODO: Support `for` counter
             let id    = &id_counter.0;
             let stmts = &mut id_counter.2.clone();
-            let _lower_limit = 0;   //  TODO: Lower Limit
-            let upper_limit = 10;  //  TODO: Upper Limit
+
+            //  Get the `for` range, e.g. `[0, 10]`
+            let range = get_range(expr);
+            let lower_limit = range[0];
+            let upper_limit = range[1];
+            assert!(lower_limit == 0);  //  TODO: Allow Lower Limit to be non-zero
+
+            //  Transcode to `dotimes`
             println!(
                 r#"
                 ( dotimes ({} {})
@@ -122,6 +128,7 @@ fn transcode_stmt(stmt: &Stmt) {
                 upper_limit,
                 "TODO_body"  //  TODO
             );
+
             //  Transcode the Statement Block
             let body = stmts.statements_mut().iter().map(|stmt| {
                 //  Transcode each Statement
@@ -207,6 +214,55 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
     )
 }
 
+
+/// Given a Rhai range expression like `range(0, 10)`
+/// return the lower and upper limits: `[0, 10]`
+fn get_range(expr: &Expr) -> [i32; 2] {
+    match expr {
+        /* Range Expression: `range(0, 10)`
+            FnCall {
+            name: "range",
+            hash: 7910928861698536248,
+            args: [
+                StackSlot(0) @ 10:24,
+                StackSlot(1) @ 10:27,
+            ],
+            constants: [
+                0,
+                10,
+            ],
+            }
+            becomes...
+            [0, 10]
+        */
+        Expr::FnCall(expr, _) => {
+            assert!(expr.name == "range");
+
+            //  Compose arguments
+            let args = expr.args.iter().map(|arg| {
+                //  Transcode each argument
+                match arg {
+                    //  Transcode a StackSlot by looking up the constants
+                    Expr::Stack(i, _) => expr.constants[*i]
+                        .clone()
+                        .try_cast::<i32>()
+                        .expect("Range arg is not integer"),
+
+                    //  Transcode other expressions
+                    _ => panic!("Unknown range arg: {:#?}", arg)
+                }                
+            });
+
+            //  Return the arguments as an array
+            let result: Vec<i32> = args.collect();
+            result.try_into()
+                .expect("Range should have 2 args")
+        }
+
+        _ => panic!("Unknown range: {:#?}", expr)
+    }
+}
+
 /* Output Log:
 
 Node: Stmt(
@@ -229,7 +285,7 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 9887006005605967150,
+            hashes: 18034603435541370594,
             args: [
                 Variable(LED_GPIO #1) @ 7:29,
                 StackSlot(0) @ 7:39,
@@ -252,7 +308,7 @@ Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 17829320615055895933,
+            hash: 7836374809332505892,
             args: [
                 StackSlot(0) @ 10:24,
                 StackSlot(1) @ 10:27,
@@ -271,12 +327,12 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 8019653561488870745,
+                        hashes: 17802253681961691950,
                         args: [
                             Variable(LED_GPIO #2) @ 14:17,
                             FnCall {
                                 name: "%",
-                                hash: 13271910207507944325 (native only),
+                                hash: 1292474179068908487 (native only),
                                 args: [
                                     Variable(i #1) @ 15:17,
                                     StackSlot(0) @ 15:21,
@@ -295,7 +351,7 @@ Node: Stmt(
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 16418138297560543868,
+                        hashes: 11270197959560556670,
                         args: [
                             StackSlot(0) @ 19:24,
                         ],
@@ -356,7 +412,7 @@ Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 9961900770723695366 (native only),
+            hashes: 5732136269448428095 (native only),
             args: [
                 Variable(a #2) @ 25:9,
                 Variable(b #1) @ 25:13,
@@ -371,5 +427,4 @@ Node: Stmt(
 
             ( + a b )
             
-
 */
