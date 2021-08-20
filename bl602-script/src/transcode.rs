@@ -114,6 +114,11 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
         Some(ns) => format!("bl_{:#?}_", ns),  //  TODO
         None => "".to_string()
     };
+    //  Compose arguments
+    let args = expr.args.iter().map(|arg| {
+        //  Transcode each argument
+        transcode_expr(&arg) + " "
+    });
     /* Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
         FnCallExpr {
             namespace: Some(
@@ -136,10 +141,10 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
         ( bl_gpio_enable_output 11 0 0 )
     */   
     format!(
-        "( {}{} {:#?} )",
+        "( {}{} {})",
         namespace,  //  `bl_gpio_` or ``
         expr.name,  //  `enable_output`
-        expr.args   //  TODO
+        args.collect::<String>()
     )
 }
 
