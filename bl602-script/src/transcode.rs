@@ -117,7 +117,14 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
     //  Compose arguments
     let args = expr.args.iter().map(|arg| {
         //  Transcode each argument
-        transcode_expr(&arg) + " "
+        let val = match arg {
+            //  Transcode a StackSlot by looking up the constants
+            Expr::Stack(i, _) => format!("{}", expr.constants[*i]),
+
+            //  Transcode other expressions
+            _ => transcode_expr(&arg)
+        };
+        val + " "
     });
     /* Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
         FnCallExpr {
