@@ -98,6 +98,11 @@ for i in range(0, 10) {
     //  Sleep 1 second
     time_delay(1000);
 }
+
+//  Evaluate an expression
+let a = 40; 
+let b = 2;
+a + b 
 ```
 
 To the Abstract Syntax Tree (AST) below. Then we walk the AST nodes and transcode them to uLisp.
