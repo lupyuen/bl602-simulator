@@ -176,7 +176,7 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 569519487578098579,
+            hashes: 9587753050075751698,
             args: [
                 Variable(LED_GPIO #1) @ 7:29,
                 StackSlot(0) @ 7:39,
@@ -193,17 +193,13 @@ Node: Stmt(
     ),
 )
 
-            ( bl_gpio_enable_output [
-    Variable(LED_GPIO #1) @ 7:29,
-    StackSlot(0) @ 7:39,
-    StackSlot(1) @ 7:42,
-] )
+            ( bl_gpio_enable_output LED_GPIO 0 0 )
             
 Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 3135654676930801593,
+            hash: 7910928861698536248,
             args: [
                 StackSlot(0) @ 10:24,
                 StackSlot(1) @ 10:27,
@@ -222,12 +218,12 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 10615082607919427242,
+                        hashes: 9672877339890908852,
                         args: [
                             Variable(LED_GPIO #2) @ 14:17,
                             FnCall {
                                 name: "%",
-                                hash: 3966643234239264188 (native only),
+                                hash: 3779146427883252895 (native only),
                                 args: [
                                     Variable(i #1) @ 15:17,
                                     StackSlot(0) @ 15:21,
@@ -246,7 +242,7 @@ Node: Stmt(
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 16706793717177321089,
+                        hashes: 6322571099619163763,
                         args: [
                             StackSlot(0) @ 19:24,
                         ],
@@ -266,7 +262,7 @@ Node: Stmt(
 Unknown stmt: For(
     FnCall {
         name: "range",
-        hash: 3135654676930801593,
+        hash: 7910928861698536248,
         args: [
             StackSlot(0) @ 10:24,
             StackSlot(1) @ 10:27,
@@ -285,12 +281,12 @@ Unknown stmt: For(
                     namespace: Some(
                         gpio,
                     ),
-                    hashes: 10615082607919427242,
+                    hashes: 9672877339890908852,
                     args: [
                         Variable(LED_GPIO #2) @ 14:17,
                         FnCall {
                             name: "%",
-                            hash: 3966643234239264188 (native only),
+                            hash: 3779146427883252895 (native only),
                             args: [
                                 Variable(i #1) @ 15:17,
                                 StackSlot(0) @ 15:21,
@@ -309,7 +305,7 @@ Unknown stmt: For(
             FnCall(
                 FnCallExpr {
                     namespace: None,
-                    hashes: 16706793717177321089,
+                    hashes: 6322571099619163763,
                     args: [
                         StackSlot(0) @ 19:24,
                     ],
@@ -357,7 +353,7 @@ Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 17067249046263552431 (native only),
+            hashes: 8113229549236714708 (native only),
             args: [
                 Variable(a #2) @ 25:9,
                 Variable(b #1) @ 25:13,
@@ -370,8 +366,5 @@ Node: Stmt(
     ),
 )
 
-            ( + [
-    Variable(a #2) @ 25:9,
-    Variable(b #1) @ 25:13,
-] )
+            ( + a b )
 */
