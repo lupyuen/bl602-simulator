@@ -79,6 +79,58 @@ fn transcode_stmt(stmt: &Stmt) {
             "TODO_body"  //  TODO
         ),
 
+        /* For Statement: `for i in range(0, 10) { ... }`
+            For(
+                FnCall {
+                    name: "range",
+                    hash: 7910928861698536248,
+                    args: [
+                        StackSlot(0) @ 10:24,
+                        StackSlot(1) @ 10:27,
+                    ],
+                    constants: [
+                        0,
+                        10,
+                    ],
+                } @ 10:18,
+                (
+                    "i" @ 10:13,
+                    None,
+                    Block[ ... ] @ 10:31,
+                ),
+                10:9,
+            )
+            becomes...
+            ( dotimes (i 10)
+                ...
+            )
+        */
+        Stmt::For(_expr, id_counter, _) => {
+            //  TODO: Allow Lower Limit to be non-zero
+            //  TODO: Support `for` counter
+            let id    = &id_counter.0;
+            let stmts = &mut id_counter.2.clone();
+            let _lower_limit = 0;   //  TODO: Lower Limit
+            let upper_limit = 10;  //  TODO: Upper Limit
+            println!(
+                r#"
+                ( dotimes ({} {})
+                    {}
+                )
+                "#,
+                id.name,
+                upper_limit,
+                "TODO_body"  //  TODO
+            );
+            //  Transcode the Statement Block
+            let body = stmts.statements_mut().iter().map(|stmt| {
+                //  Transcode each Statement
+                transcode_stmt(stmt);
+                ""  //  TODO
+            });
+            println!("TODO_body: {:#?}", body.collect::<String>());
+        }        
+
         //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
         Stmt::FnCall(expr, _) => println!(
             r#"
@@ -156,6 +208,7 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
 }
 
 /* Output Log:
+
 Node: Stmt(
     Var(
         11 @ 4:24,
@@ -176,7 +229,7 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 9587753050075751698,
+            hashes: 9887006005605967150,
             args: [
                 Variable(LED_GPIO #1) @ 7:29,
                 StackSlot(0) @ 7:39,
@@ -199,7 +252,7 @@ Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 7910928861698536248,
+            hash: 17829320615055895933,
             args: [
                 StackSlot(0) @ 10:24,
                 StackSlot(1) @ 10:27,
@@ -218,12 +271,12 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 9672877339890908852,
+                        hashes: 8019653561488870745,
                         args: [
                             Variable(LED_GPIO #2) @ 14:17,
                             FnCall {
                                 name: "%",
-                                hash: 3779146427883252895 (native only),
+                                hash: 13271910207507944325 (native only),
                                 args: [
                                     Variable(i #1) @ 15:17,
                                     StackSlot(0) @ 15:21,
@@ -242,7 +295,7 @@ Node: Stmt(
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 6322571099619163763,
+                        hashes: 16418138297560543868,
                         args: [
                             StackSlot(0) @ 19:24,
                         ],
@@ -259,68 +312,18 @@ Node: Stmt(
         10:9,
     ),
 )
-Unknown stmt: For(
-    FnCall {
-        name: "range",
-        hash: 7910928861698536248,
-        args: [
-            StackSlot(0) @ 10:24,
-            StackSlot(1) @ 10:27,
-        ],
-        constants: [
-            0,
-            10,
-        ],
-    } @ 10:18,
-    (
-        "i" @ 10:13,
-        None,
-        Block[
-            FnCall(
-                FnCallExpr {
-                    namespace: Some(
-                        gpio,
-                    ),
-                    hashes: 9672877339890908852,
-                    args: [
-                        Variable(LED_GPIO #2) @ 14:17,
-                        FnCall {
-                            name: "%",
-                            hash: 3779146427883252895 (native only),
-                            args: [
-                                Variable(i #1) @ 15:17,
-                                StackSlot(0) @ 15:21,
-                            ],
-                            constants: [
-                                2,
-                            ],
-                        } @ 15:19,
-                    ],
-                    constants: [],
-                    name: "output_set",
-                    capture: false,
-                },
-                13:19,
-            ),
-            FnCall(
-                FnCallExpr {
-                    namespace: None,
-                    hashes: 6322571099619163763,
-                    args: [
-                        StackSlot(0) @ 19:24,
-                    ],
-                    constants: [
-                        1000,
-                    ],
-                    name: "time_delay",
-                    capture: false,
-                },
-                19:13,
-            ),
-        ] @ 10:31,
-    ),
-    10:9,
-)
+
+                ( dotimes (i 10)
+                    TODO_body
+                )
+                
+
+            ( bl_gpio_output_set LED_GPIO ( % i 2 ) )
+            
+
+            ( time_delay 1000 )
+            
+TODO_body: ""
 Node: Stmt(
     Var(
         40 @ 23:17,
@@ -353,7 +356,7 @@ Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 8113229549236714708 (native only),
+            hashes: 9961900770723695366 (native only),
             args: [
                 Variable(a #2) @ 25:9,
                 Variable(b #1) @ 25:13,
@@ -367,4 +370,6 @@ Node: Stmt(
 )
 
             ( + a b )
+            
+
 */
