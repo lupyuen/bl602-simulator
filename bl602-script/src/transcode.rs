@@ -75,9 +75,9 @@ fn transcode_stmt(stmt: &Stmt) {
                 {}
             )
             "#,
-            ident.name,
-            transcode_expr(expr),
-            "TODO_body"  //  TODO
+            ident.name,            //  `LED_GPIO`
+            transcode_expr(expr),  //  `11`
+            "TODO_body"            //  TODO
         ),
 
         /* For Statement: `for i in range(0, 10) { ... }`
@@ -124,9 +124,9 @@ fn transcode_stmt(stmt: &Stmt) {
                     {}
                 )
                 "#,
-                id.name,
-                upper_limit,
-                "TODO_body"  //  TODO
+                id.name,      //  `i`
+                upper_limit,  //  `10`
+                "TODO_body"   //  TODO
             );
 
             //  Transcode the Statement Block
@@ -168,23 +168,6 @@ fn transcode_expr(expr: &Expr) -> String {
 
 /// Transcode a Rhai Function Call to uLisp
 fn transcode_fncall(expr: &FnCallExpr) -> String {
-    //  Compose namespace like `bl_gpio_` or ``
-    let namespace = match &expr.namespace {
-        Some(ns) => format!("bl_{:#?}_", ns),  //  TODO
-        None => "".to_string()
-    };
-    //  Compose arguments
-    let args = expr.args.iter().map(|arg| {
-        //  Transcode each argument
-        let val = match arg {
-            //  Transcode a StackSlot by looking up the constants
-            Expr::Stack(i, _) => format!("{}", expr.constants[*i]),
-
-            //  Transcode other expressions
-            _ => transcode_expr(&arg)
-        };
-        val + " "
-    });
     /* Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
         FnCallExpr {
             namespace: Some(
@@ -206,14 +189,44 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
         becomes...
         ( bl_gpio_enable_output 11 0 0 )
     */   
+
+    //  Compose namespace like `bl_gpio_` or ``
+    let namespace = match &expr.namespace {
+        Some(ns) => format!("bl_{:#?}_", ns),  //  TODO
+        None => "".to_string()
+    };
+
+    //  Compose arguments
+    let args = expr.args.iter().map(|arg| {
+        //  Transcode each argument
+        let val = match arg {
+            //  Transcode a StackSlot by looking up the constants
+            Expr::Stack(i, _) => format!("{}", expr.constants[*i]),
+
+            //  Transcode other expressions
+            _ => transcode_expr(&arg)
+        };
+        val + " "
+    });
+
+    //  Transcode to uLisp Function Call:
+    //  `( bl_gpio_enable_output 11 0 0 )`
     format!(
         "( {}{} {})",
-        namespace,  //  `bl_gpio_` or ``
-        expr.name,  //  `enable_output`
-        args.collect::<String>()
+        namespace,                             //  `bl_gpio_` or ``
+        rename_function(&expr.name.as_str()),  //  `enable_output`, `+` or `mod`
+        args.collect::<String>()               //  `11 0 0 `
     )
 }
 
+/// Rename a Rhai Function or Operator Name to uLisp:
+/// `%` becomes `mod`
+fn rename_function(name: &str) -> String {
+    match name {
+        "%" => "mod",
+        _   => name
+    }.to_string()
+}
 
 /// Given a Rhai range expression like `range(0, 10)`
 /// return the lower and upper limits: `[0, 10]`
@@ -285,7 +298,7 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 18034603435541370594,
+            hashes: 14643063589770538716,
             args: [
                 Variable(LED_GPIO #1) @ 7:29,
                 StackSlot(0) @ 7:39,
@@ -308,7 +321,7 @@ Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 7836374809332505892,
+            hash: 17738280775560091951,
             args: [
                 StackSlot(0) @ 10:24,
                 StackSlot(1) @ 10:27,
@@ -327,12 +340,12 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 17802253681961691950,
+                        hashes: 1861784796852141795,
                         args: [
                             Variable(LED_GPIO #2) @ 14:17,
                             FnCall {
                                 name: "%",
-                                hash: 1292474179068908487 (native only),
+                                hash: 8534142775551669723 (native only),
                                 args: [
                                     Variable(i #1) @ 15:17,
                                     StackSlot(0) @ 15:21,
@@ -351,7 +364,7 @@ Node: Stmt(
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 11270197959560556670,
+                        hashes: 13070461326013648071,
                         args: [
                             StackSlot(0) @ 19:24,
                         ],
@@ -374,7 +387,7 @@ Node: Stmt(
                 )
                 
 
-            ( bl_gpio_output_set LED_GPIO ( % i 2 ) )
+            ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
             
 
             ( time_delay 1000 )
@@ -412,7 +425,7 @@ Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 5732136269448428095 (native only),
+            hashes: 2402555959290588140 (native only),
             args: [
                 Variable(a #2) @ 25:9,
                 Variable(b #1) @ 25:13,
@@ -426,5 +439,5 @@ Node: Stmt(
 )
 
             ( + a b )
-            
+                      
 */
