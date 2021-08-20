@@ -35,13 +35,6 @@ fn transcode_node(nodes: &[ASTNode]) -> bool {
         println!("Node: {:#?}", node);
     }
 
-    //  Testing: Stop after a few nodes
-    unsafe {
-        static mut COUNT: u32 = 0;
-        COUNT += 1;
-        if COUNT > 10 { return false }
-    }    
-    
     //  Transcode the Node: Statement or Expression
     match node {
         ASTNode::Stmt(stmt) => { transcode_stmt(stmt); }
