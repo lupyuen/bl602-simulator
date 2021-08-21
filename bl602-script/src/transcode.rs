@@ -283,6 +283,7 @@ fn get_range(expr: &Expr) -> [i32; 2] {
 
 /* Output Log:
 
+begin: let* ()
 Node: Stmt(
     Var(
         11 @ 4:24,
@@ -291,19 +292,14 @@ Node: Stmt(
         4:9,
     ),
 )
-
-            ( let* 
-                (( LED_GPIO 11 ))
-                TODO_body
-            )
-            
+begin: let* (( LED_GPIO 11 ))
 Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: Some(
                 gpio,
             ),
-            hashes: 14643063589770538716,
+            hashes: 5011158642447025924,
             args: [
                 Variable(LED_GPIO #1) @ 7:29,
                 StackSlot(0) @ 7:39,
@@ -319,14 +315,12 @@ Node: Stmt(
         7:15,
     ),
 )
-
-            ( bl_gpio_enable_output LED_GPIO 0 0 )
-            
+add:   ( bl_gpio_enable_output LED_GPIO 0 0 )
 Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 17738280775560091951,
+            hash: 4586966905083840977,
             args: [
                 StackSlot(0) @ 10:24,
                 StackSlot(1) @ 10:27,
@@ -345,12 +339,12 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 1861784796852141795,
+                        hashes: 7431606789252924687,
                         args: [
                             Variable(LED_GPIO #2) @ 14:17,
                             FnCall {
                                 name: "%",
-                                hash: 8534142775551669723 (native only),
+                                hash: 2687518567151262708 (native only),
                                 args: [
                                     Variable(i #1) @ 15:17,
                                     StackSlot(0) @ 15:21,
@@ -369,7 +363,7 @@ Node: Stmt(
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 13070461326013648071,
+                        hashes: 832275683387471643,
                         args: [
                             StackSlot(0) @ 19:24,
                         ],
@@ -386,18 +380,13 @@ Node: Stmt(
         10:9,
     ),
 )
-
-                ( dotimes (i 10)
-                    TODO_body
-                )
-                
-
-            ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
-            
-
-            ( time_delay 1000 )
-            
-TODO_body: ""
+begin: dotimes (i 10)
+add:   ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
+add:   ( time_delay 1000 )
+add:   ( dotimes (i 10) 
+  ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
+  ( time_delay 1000 )
+)
 Node: Stmt(
     Var(
         40 @ 23:17,
@@ -406,12 +395,7 @@ Node: Stmt(
         23:9,
     ),
 )
-
-            ( let* 
-                (( a 40 ))
-                TODO_body
-            )
-            
+begin: let* (( a 40 ))
 Node: Stmt(
     Var(
         2 @ 24:17,
@@ -420,17 +404,12 @@ Node: Stmt(
         24:9,
     ),
 )
-
-            ( let* 
-                (( b 2 ))
-                TODO_body
-            )
-            
+begin: let* (( b 2 ))
 Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 2402555959290588140 (native only),
+            hashes: 15218087706094760923 (native only),
             args: [
                 Variable(a #2) @ 25:9,
                 Variable(b #1) @ 25:13,
@@ -442,7 +421,21 @@ Node: Stmt(
         25:11,
     ),
 )
-
-            ( + a b )
-                      
+add:   ( + a b )
+Transcoded uLisp:
+( let* () 
+  ( let* (( LED_GPIO 11 )) 
+  ( bl_gpio_enable_output LED_GPIO 0 0 )
+  ( dotimes (i 10) 
+  ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
+  ( time_delay 1000 )
+)
+  ( let* (( a 40 )) 
+  ( let* (( b 2 )) 
+  ( + a b )
+)
+)
+)
+)
+                    
 */
