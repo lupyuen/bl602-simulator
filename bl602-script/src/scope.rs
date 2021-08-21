@@ -66,8 +66,12 @@ pub fn end_scope(index: usize) -> String {
         //  Concatenate the body
         let scp = unsafe { ALL_SCOPES.last().unwrap() };
         let body = scp.body.iter().map(|s| {
-            //  Add an indentation and newline to each body
-            "  ".to_owned() + s.as_str() + "\n"
+            //  Add an indentation and newline to each line in body
+            s.split("\n")
+                .map(|s2| {
+                    "  ".to_owned() + s2 + "\n"
+                })
+                .collect::<String>()
         });
 
         //  Combine the header with the body

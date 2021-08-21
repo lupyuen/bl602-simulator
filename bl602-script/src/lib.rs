@@ -181,7 +181,7 @@ AST: AST {
                 namespace: Some(
                     gpio,
                 ),
-                hashes: 14026165341011925297,
+                hashes: 4217139305637504581,
                 args: [
                     Variable(LED_GPIO #1) @ 7:29,
                     StackSlot(0) @ 7:39,
@@ -199,7 +199,7 @@ AST: AST {
         For(
             FnCall {
                 name: "range",
-                hash: 6483209994621034098,
+                hash: 8244420188984039809,
                 args: [
                     StackSlot(0) @ 10:24,
                     StackSlot(1) @ 10:27,
@@ -218,12 +218,12 @@ AST: AST {
                             namespace: Some(
                                 gpio,
                             ),
-                            hashes: 14851760529339133429,
+                            hashes: 17196306752838884910,
                             args: [
                                 Variable(LED_GPIO #2) @ 14:17,
                                 FnCall {
                                     name: "%",
-                                    hash: 16068100750815511651 (native only),
+                                    hash: 16310553074906991622 (native only),
                                     args: [
                                         Variable(i #1) @ 15:17,
                                         StackSlot(0) @ 15:21,
@@ -242,7 +242,7 @@ AST: AST {
                     FnCall(
                         FnCallExpr {
                             namespace: None,
-                            hashes: 5888125028643394501,
+                            hashes: 1493544216411903228,
                             args: [
                                 StackSlot(0) @ 19:24,
                             ],
@@ -273,7 +273,7 @@ AST: AST {
         FnCall(
             FnCallExpr {
                 namespace: None,
-                hashes: 45565345930656002 (native only),
+                hashes: 8174902439497844401 (native only),
                 args: [
                     Variable(a #2) @ 25:9,
                     Variable(b #1) @ 25:13,
@@ -288,6 +288,160 @@ AST: AST {
     functions: Module,
     resolver: None,
 }
+begin: let* ()
+Node: Stmt(
+    Var(
+        11 @ 4:24,
+        "LED_GPIO" @ 4:13,
+        (),
+        4:9,
+    ),
+)
+begin: let* (( LED_GPIO 11 ))
+Node: Stmt(
+    FnCall(
+        FnCallExpr {
+            namespace: Some(
+                gpio,
+            ),
+            hashes: 4217139305637504581,
+            args: [
+                Variable(LED_GPIO #1) @ 7:29,
+                StackSlot(0) @ 7:39,
+                StackSlot(1) @ 7:42,
+            ],
+            constants: [
+                0,
+                0,
+            ],
+            name: "enable_output",
+            capture: false,
+        },
+        7:15,
+    ),
+)
+add:   ( bl_gpio_enable_output LED_GPIO 0 0 )
+Node: Stmt(
+    For(
+        FnCall {
+            name: "range",
+            hash: 8244420188984039809,
+            args: [
+                StackSlot(0) @ 10:24,
+                StackSlot(1) @ 10:27,
+            ],
+            constants: [
+                0,
+                10,
+            ],
+        } @ 10:18,
+        (
+            "i" @ 10:13,
+            None,
+            Block[
+                FnCall(
+                    FnCallExpr {
+                        namespace: Some(
+                            gpio,
+                        ),
+                        hashes: 17196306752838884910,
+                        args: [
+                            Variable(LED_GPIO #2) @ 14:17,
+                            FnCall {
+                                name: "%",
+                                hash: 16310553074906991622 (native only),
+                                args: [
+                                    Variable(i #1) @ 15:17,
+                                    StackSlot(0) @ 15:21,
+                                ],
+                                constants: [
+                                    2,
+                                ],
+                            } @ 15:19,
+                        ],
+                        constants: [],
+                        name: "output_set",
+                        capture: false,
+                    },
+                    13:19,
+                ),
+                FnCall(
+                    FnCallExpr {
+                        namespace: None,
+                        hashes: 1493544216411903228,
+                        args: [
+                            StackSlot(0) @ 19:24,
+                        ],
+                        constants: [
+                            1000,
+                        ],
+                        name: "time_delay",
+                        capture: false,
+                    },
+                    19:13,
+                ),
+            ] @ 10:31,
+        ),
+        10:9,
+    ),
+)
+begin: dotimes (i 10)
+add:   ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
+add:   ( time_delay 1000 )
+add:   ( dotimes (i 10) 
+  ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
+  ( time_delay 1000 )
+)
+Node: Stmt(
+    Var(
+        40 @ 23:17,
+        "a" @ 23:13,
+        (),
+        23:9,
+    ),
+)
+begin: let* (( a 40 ))
+Node: Stmt(
+    Var(
+        2 @ 24:17,
+        "b" @ 24:13,
+        (),
+        24:9,
+    ),
+)
+begin: let* (( b 2 ))
+Node: Stmt(
+    FnCall(
+        FnCallExpr {
+            namespace: None,
+            hashes: 8174902439497844401 (native only),
+            args: [
+                Variable(a #2) @ 25:9,
+                Variable(b #1) @ 25:13,
+            ],
+            constants: [],
+            name: "+",
+            capture: false,
+        },
+        25:11,
+    ),
+)
+add:   ( + a b )
+Transcoded uLisp:
+( let* () 
+  ( let* (( LED_GPIO 11 )) 
+    ( bl_gpio_enable_output LED_GPIO 0 0 )
+    ( dotimes (i 10) 
+      ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
+      ( time_delay 1000 )
+    )
+    ( let* (( a 40 )) 
+      ( let* (( b 2 )) 
+        ( + a b )
+      )
+    )
+  )
+)
 gpio::enable_output: pin=11, pullup=0, pulldown=0
 gpio::output_set: pin=11, value=0
 time_delay: 1000
@@ -424,4 +578,5 @@ Events: [
     }
   }
 ]
+
 */

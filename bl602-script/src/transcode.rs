@@ -299,7 +299,7 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 5011158642447025924,
+            hashes: 4217139305637504581,
             args: [
                 Variable(LED_GPIO #1) @ 7:29,
                 StackSlot(0) @ 7:39,
@@ -320,7 +320,7 @@ Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 4586966905083840977,
+            hash: 8244420188984039809,
             args: [
                 StackSlot(0) @ 10:24,
                 StackSlot(1) @ 10:27,
@@ -339,12 +339,12 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 7431606789252924687,
+                        hashes: 17196306752838884910,
                         args: [
                             Variable(LED_GPIO #2) @ 14:17,
                             FnCall {
                                 name: "%",
-                                hash: 2687518567151262708 (native only),
+                                hash: 16310553074906991622 (native only),
                                 args: [
                                     Variable(i #1) @ 15:17,
                                     StackSlot(0) @ 15:21,
@@ -363,7 +363,7 @@ Node: Stmt(
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 832275683387471643,
+                        hashes: 1493544216411903228,
                         args: [
                             StackSlot(0) @ 19:24,
                         ],
@@ -409,7 +409,7 @@ Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 15218087706094760923 (native only),
+            hashes: 8174902439497844401 (native only),
             args: [
                 Variable(a #2) @ 25:9,
                 Variable(b #1) @ 25:13,
@@ -425,17 +425,17 @@ add:   ( + a b )
 Transcoded uLisp:
 ( let* () 
   ( let* (( LED_GPIO 11 )) 
-  ( bl_gpio_enable_output LED_GPIO 0 0 )
-  ( dotimes (i 10) 
-  ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
-  ( time_delay 1000 )
+    ( bl_gpio_enable_output LED_GPIO 0 0 )
+    ( dotimes (i 10) 
+      ( bl_gpio_output_set LED_GPIO ( mod i 2 ) )
+      ( time_delay 1000 )
+    )
+    ( let* (( a 40 )) 
+      ( let* (( b 2 )) 
+        ( + a b )
+      )
+    )
+  )
 )
-  ( let* (( a 40 )) 
-  ( let* (( b 2 )) 
-  ( + a b )
-)
-)
-)
-)
-                    
+                  
 */
