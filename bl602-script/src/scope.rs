@@ -26,7 +26,8 @@ body: Vec<String>,
 /// Header looks like
 ///   `let* (( LED_GPIO 11 ))` or
 ///   `dotimes (i 10)`
-pub fn begin_scope(header: &str) -> u32 {
+pub fn begin_scope(header: &str) -> usize {
+    println!("begin: {}", header);
     0  //  TODO
 }
 
@@ -44,7 +45,7 @@ pub fn begin_scope(header: &str) -> u32 {
 ///   ...
 /// )
 /// ```
-pub fn end_scope(index: u32) -> String {
+pub fn end_scope(index: usize) -> String {
     "".to_string()  //  TODO
 }
 
@@ -52,4 +53,6 @@ pub fn end_scope(index: u32) -> String {
 ///   `( bl_gpio_enable_output LED_GPIO 0 0 )` or
 ///   `( bl_gpio_output_set LED_GPIO ( mod i 2 ) )`
 pub fn add_to_scope(expr: &str) {
+    if expr == "" { return; }
+    println!("add: {}", expr);
 }

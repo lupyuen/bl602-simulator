@@ -9,11 +9,19 @@ use rhai::{
     Position,
     Stmt,
 };
+use crate::scope;
 
 /// Transcode the compiled Rhai Script to uLisp
 pub fn transcode(ast: &AST) {
+    //  Start the first uLisp Scope
+    let scope_index = scope::begin_scope("let* ()");
+
     //  Walk the nodes in the Rhai Abstract Syntax Tree
     ast.walk(&mut transcode_node);
+
+    //  End the first uLisp Scope and get the uLisp S-Expression for the scope
+    let output = scope::end_scope(scope_index);
+    println!("Transcoded uLisp:\n{}", output);
 }
 
 /// Transcode the Rhai AST Node to uLisp
@@ -36,17 +44,20 @@ fn transcode_node(nodes: &[ASTNode]) -> bool {
     }
 
     //  Transcode the Node: Statement or Expression
-    match node {
-        ASTNode::Stmt(stmt) => { transcode_stmt(stmt); }
-        ASTNode::Expr(expr) => { transcode_expr(expr); }
-    }
+    let output = match node {
+        ASTNode::Stmt(stmt) => transcode_stmt(stmt),
+        ASTNode::Expr(expr) => transcode_expr(expr),
+    };
+
+    //  Add the transcoded uLisp S-Expression to the current scope
+    scope::add_to_scope(&output);
 
     //  Return true to walk the next node in the tree
     true
 }
 
 /// Transcode a Rhai Statement to uLisp
-fn transcode_stmt(stmt: &Stmt) {
+fn transcode_stmt(stmt: &Stmt) -> String {
     match stmt {
         /* Let or Const Statement: `let LED_GPIO = 11`
             Var(
@@ -61,17 +72,19 @@ fn transcode_stmt(stmt: &Stmt) {
                 ...
             )
         */    
-        Stmt::Var(expr, ident, _, _) => println!(
-            r#"
-            ( let* 
-                (( {} {} ))
-                {}
-            )
-            "#,
-            ident.name,            //  `LED_GPIO`
-            transcode_expr(expr),  //  `11`
-            "TODO_body"            //  TODO
-        ),
+        Stmt::Var(expr, ident, _, _) => {
+            //  Begin a new uLisp Scope
+            scope::begin_scope(
+                format!(
+                    "let* (( {} {} ))",    //  `let* (( LED_GPIO 11 ))`
+                    ident.name,            //  `LED_GPIO`
+                    transcode_expr(expr),  //  `11`
+                ).as_str()
+            );
+
+            //  Scope will end when the parent scope ends
+            "".to_string()
+        }
 
         /* For Statement: `for i in range(0, 10) { ... }`
             For(
@@ -110,36 +123,35 @@ fn transcode_stmt(stmt: &Stmt) {
             let upper_limit = range[1];
             assert!(lower_limit == 0);  //  TODO: Allow Lower Limit to be non-zero
 
-            //  Transcode to `dotimes`
-            println!(
-                r#"
-                ( dotimes ({} {})
-                    {}
-                )
-                "#,
-                id.name,      //  `i`
-                upper_limit,  //  `10`
-                "TODO_body"   //  TODO
+            //  Begin a new uLisp Scope
+            let scope_index = scope::begin_scope(
+                format!(
+                    "dotimes ({} {})",  //  `dotimes (i 10)`
+                    id.name,            //  `i`
+                    upper_limit,        //  `10`
+                ).as_str()
             );
 
             //  Transcode the Statement Block
-            let body = stmts.statements_mut().iter().map(|stmt| {
+            stmts.statements_mut().iter().for_each(|stmt| {
                 //  Transcode each Statement
-                transcode_stmt(stmt);
-                ""  //  TODO
+                let output = transcode_stmt(stmt);
+
+                //  Add the transcoded uLisp S-Expression to the current scope
+                scope::add_to_scope(&output);
             });
-            println!("TODO_body: {:#?}", body.collect::<String>());
+
+            //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
+            scope::end_scope(scope_index)
         }        
 
         //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
-        Stmt::FnCall(expr, _) => println!(
-            r#"
-            {}
-            "#,
+        Stmt::FnCall(expr, _) => format!(
+            "{}",
             transcode_fncall(expr)
         ),
 
-        _ => println!("Unknown stmt: {:#?}", stmt)
+        _ => panic!("Unknown stmt: {:#?}", stmt)
     }
 }
 
@@ -155,7 +167,7 @@ fn transcode_expr(expr: &Expr) -> String {
         //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
         Expr::FnCall(expr, _) => transcode_fncall(expr),
 
-        _ => format!("Unknown expr: {:#?}", expr)
+        _ => panic!("Unknown expr: {:#?}", expr)
     }
 }
 
