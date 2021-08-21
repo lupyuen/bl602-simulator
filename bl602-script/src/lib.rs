@@ -44,6 +44,13 @@ extern "C" fn rust_script(   //  Declare `extern "C"` because it will be called 
 
     //  Rhai Script to be evaluated
     let script = r#" 
+        //  Testing Loop
+        loop { 
+            let a = 1;
+            print(a);
+            if a == 1 { break; }
+        }
+
         //  Blink the LED:
         //  PineCone Blue LED is connected on BL602 GPIO 11
         let LED_GPIO = 11;
@@ -170,22 +177,69 @@ Created script engine
 AST: AST {
     source: None,
     body: Block[
-        Var(
-            11 @ 4:24,
-            "LED_GPIO" @ 4:13,
+        While(
             (),
-            4:9,
+            Block[
+                Var(
+                    1 @ 4:21,
+                    "a" @ 4:17,
+                    (),
+                    4:13,
+                ),
+                FnCall(
+                    FnCallExpr {
+                        namespace: None,
+                        hashes: 67527529886503918,
+                        args: [
+                            Variable(a #1) @ 5:19,
+                        ],
+                        constants: [],
+                        name: "print",
+                        capture: false,
+                    },
+                    5:13,
+                ),
+                If(
+                    FnCall {
+                        name: "==",
+                        hash: 17995251237036173671 (native only),
+                        args: [
+                            Variable(a #1) @ 6:16,
+                            StackSlot(0) @ 6:21,
+                        ],
+                        constants: [
+                            1,
+                        ],
+                    } @ 6:18,
+                    (
+                        Block[
+                            Break(
+                                6:25,
+                            ),
+                        ] @ 6:23,
+                        Block[],
+                    ),
+                    6:13,
+                ),
+            ] @ 3:14,
+            3:9,
+        ),
+        Var(
+            11 @ 11:24,
+            "LED_GPIO" @ 11:13,
+            (),
+            11:9,
         ),
         FnCall(
             FnCallExpr {
                 namespace: Some(
                     gpio,
                 ),
-                hashes: 4217139305637504581,
+                hashes: 12987214658708294900,
                 args: [
-                    Variable(LED_GPIO #1) @ 7:29,
-                    StackSlot(0) @ 7:39,
-                    StackSlot(1) @ 7:42,
+                    Variable(LED_GPIO #1) @ 14:29,
+                    StackSlot(0) @ 14:39,
+                    StackSlot(1) @ 14:42,
                 ],
                 constants: [
                     0,
@@ -194,23 +248,23 @@ AST: AST {
                 name: "enable_output",
                 capture: false,
             },
-            7:15,
+            14:15,
         ),
         For(
             FnCall {
                 name: "range",
-                hash: 8244420188984039809,
+                hash: 575929612303946337,
                 args: [
-                    StackSlot(0) @ 10:24,
-                    StackSlot(1) @ 10:27,
+                    StackSlot(0) @ 17:24,
+                    StackSlot(1) @ 17:27,
                 ],
                 constants: [
                     0,
                     10,
                 ],
-            } @ 10:18,
+            } @ 17:18,
             (
-                "i" @ 10:13,
+                "i" @ 17:13,
                 None,
                 Block[
                     FnCall(
@@ -218,33 +272,33 @@ AST: AST {
                             namespace: Some(
                                 gpio,
                             ),
-                            hashes: 17196306752838884910,
+                            hashes: 11353779519759374485,
                             args: [
-                                Variable(LED_GPIO #2) @ 14:17,
+                                Variable(LED_GPIO #2) @ 21:17,
                                 FnCall {
                                     name: "%",
-                                    hash: 16310553074906991622 (native only),
+                                    hash: 3751886575790804804 (native only),
                                     args: [
-                                        Variable(i #1) @ 15:17,
-                                        StackSlot(0) @ 15:21,
+                                        Variable(i #1) @ 22:17,
+                                        StackSlot(0) @ 22:21,
                                     ],
                                     constants: [
                                         2,
                                     ],
-                                } @ 15:19,
+                                } @ 22:19,
                             ],
                             constants: [],
                             name: "output_set",
                             capture: false,
                         },
-                        13:19,
+                        20:19,
                     ),
                     FnCall(
                         FnCallExpr {
                             namespace: None,
-                            hashes: 1493544216411903228,
+                            hashes: 16488626815644268959,
                             args: [
-                                StackSlot(0) @ 19:24,
+                                StackSlot(0) @ 26:24,
                             ],
                             constants: [
                                 1000,
@@ -252,37 +306,37 @@ AST: AST {
                             name: "time_delay",
                             capture: false,
                         },
-                        19:13,
+                        26:13,
                     ),
-                ] @ 10:31,
+                ] @ 17:31,
             ),
-            10:9,
+            17:9,
         ),
         Var(
-            40 @ 23:17,
-            "a" @ 23:13,
+            40 @ 30:17,
+            "a" @ 30:13,
             (),
-            23:9,
+            30:9,
         ),
         Var(
-            2 @ 24:17,
-            "b" @ 24:13,
+            2 @ 31:17,
+            "b" @ 31:13,
             (),
-            24:9,
+            31:9,
         ),
         FnCall(
             FnCallExpr {
                 namespace: None,
-                hashes: 8174902439497844401 (native only),
+                hashes: 749902770210084069 (native only),
                 args: [
-                    Variable(a #2) @ 25:9,
-                    Variable(b #1) @ 25:13,
+                    Variable(a #2) @ 32:9,
+                    Variable(b #1) @ 32:13,
                 ],
                 constants: [],
                 name: "+",
                 capture: false,
             },
-            25:11,
+            32:11,
         ),
     ],
     functions: Module,
@@ -290,11 +344,76 @@ AST: AST {
 }
 begin: let* ()
 Node: Stmt(
-    Var(
-        11 @ 4:24,
-        "LED_GPIO" @ 4:13,
+    While(
         (),
-        4:9,
+        Block[
+            Var(
+                1 @ 4:21,
+                "a" @ 4:17,
+                (),
+                4:13,
+            ),
+            FnCall(
+                FnCallExpr {
+                    namespace: None,
+                    hashes: 67527529886503918,
+                    args: [
+                        Variable(a #1) @ 5:19,
+                    ],
+                    constants: [],
+                    name: "print",
+                    capture: false,
+                },
+                5:13,
+            ),
+            If(
+                FnCall {
+                    name: "==",
+                    hash: 17995251237036173671 (native only),
+                    args: [
+                        Variable(a #1) @ 6:16,
+                        StackSlot(0) @ 6:21,
+                    ],
+                    constants: [
+                        1,
+                    ],
+                } @ 6:18,
+                (
+                    Block[
+                        Break(
+                            6:25,
+                        ),
+                    ] @ 6:23,
+                    Block[],
+                ),
+                6:13,
+            ),
+        ] @ 3:14,
+        3:9,
+    ),
+)
+begin: loop
+begin: let* (( a 1 ))
+add:   ( print a )
+begin: if ( eq a 1 )
+add:   ( return )
+add:   ( if ( eq a 1 ) 
+  ( return )
+)
+add:   ( loop 
+  ( let* (( a 1 )) 
+    ( print a )
+    ( if ( eq a 1 ) 
+      ( return )
+    )
+  )
+)
+Node: Stmt(
+    Var(
+        11 @ 11:24,
+        "LED_GPIO" @ 11:13,
+        (),
+        11:9,
     ),
 )
 begin: let* (( LED_GPIO 11 ))
@@ -304,11 +423,11 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 4217139305637504581,
+            hashes: 12987214658708294900,
             args: [
-                Variable(LED_GPIO #1) @ 7:29,
-                StackSlot(0) @ 7:39,
-                StackSlot(1) @ 7:42,
+                Variable(LED_GPIO #1) @ 14:29,
+                StackSlot(0) @ 14:39,
+                StackSlot(1) @ 14:42,
             ],
             constants: [
                 0,
@@ -317,7 +436,7 @@ Node: Stmt(
             name: "enable_output",
             capture: false,
         },
-        7:15,
+        14:15,
     ),
 )
 add:   ( bl_gpio_enable_output LED_GPIO 0 0 )
@@ -325,18 +444,18 @@ Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 8244420188984039809,
+            hash: 575929612303946337,
             args: [
-                StackSlot(0) @ 10:24,
-                StackSlot(1) @ 10:27,
+                StackSlot(0) @ 17:24,
+                StackSlot(1) @ 17:27,
             ],
             constants: [
                 0,
                 10,
             ],
-        } @ 10:18,
+        } @ 17:18,
         (
-            "i" @ 10:13,
+            "i" @ 17:13,
             None,
             Block[
                 FnCall(
@@ -344,33 +463,33 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 17196306752838884910,
+                        hashes: 11353779519759374485,
                         args: [
-                            Variable(LED_GPIO #2) @ 14:17,
+                            Variable(LED_GPIO #2) @ 21:17,
                             FnCall {
                                 name: "%",
-                                hash: 16310553074906991622 (native only),
+                                hash: 3751886575790804804 (native only),
                                 args: [
-                                    Variable(i #1) @ 15:17,
-                                    StackSlot(0) @ 15:21,
+                                    Variable(i #1) @ 22:17,
+                                    StackSlot(0) @ 22:21,
                                 ],
                                 constants: [
                                     2,
                                 ],
-                            } @ 15:19,
+                            } @ 22:19,
                         ],
                         constants: [],
                         name: "output_set",
                         capture: false,
                     },
-                    13:19,
+                    20:19,
                 ),
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 1493544216411903228,
+                        hashes: 16488626815644268959,
                         args: [
-                            StackSlot(0) @ 19:24,
+                            StackSlot(0) @ 26:24,
                         ],
                         constants: [
                             1000,
@@ -378,11 +497,11 @@ Node: Stmt(
                         name: "time_delay",
                         capture: false,
                     },
-                    19:13,
+                    26:13,
                 ),
-            ] @ 10:31,
+            ] @ 17:31,
         ),
-        10:9,
+        17:9,
     ),
 )
 begin: dotimes (i 10)
@@ -394,19 +513,19 @@ add:   ( dotimes (i 10)
 )
 Node: Stmt(
     Var(
-        40 @ 23:17,
-        "a" @ 23:13,
+        40 @ 30:17,
+        "a" @ 30:13,
         (),
-        23:9,
+        30:9,
     ),
 )
 begin: let* (( a 40 ))
 Node: Stmt(
     Var(
-        2 @ 24:17,
-        "b" @ 24:13,
+        2 @ 31:17,
+        "b" @ 31:13,
         (),
-        24:9,
+        31:9,
     ),
 )
 begin: let* (( b 2 ))
@@ -414,21 +533,29 @@ Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 8174902439497844401 (native only),
+            hashes: 749902770210084069 (native only),
             args: [
-                Variable(a #2) @ 25:9,
-                Variable(b #1) @ 25:13,
+                Variable(a #2) @ 32:9,
+                Variable(b #1) @ 32:13,
             ],
             constants: [],
             name: "+",
             capture: false,
         },
-        25:11,
+        32:11,
     ),
 )
 add:   ( + a b )
 Transcoded uLisp:
 ( let* () 
+  ( loop 
+    ( let* (( a 1 )) 
+      ( print a )
+      ( if ( eq a 1 ) 
+        ( return )
+      )
+    )
+  )
   ( let* (( LED_GPIO 11 )) 
     ( bl_gpio_enable_output LED_GPIO 0 0 )
     ( dotimes (i 10) 

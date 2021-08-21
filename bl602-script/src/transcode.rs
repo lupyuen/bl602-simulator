@@ -8,11 +8,12 @@ use rhai::{
     FnCallExpr,
     Position,
     Stmt,
+    StmtBlock,
 };
 use crate::scope;
 
 /// Transcode the compiled Rhai Script to uLisp
-pub fn transcode(ast: &AST) {
+pub fn transcode(ast: &AST) -> String {
     //  Start the first uLisp Scope
     let scope_index = scope::begin_scope("let* ()");
 
@@ -22,6 +23,7 @@ pub fn transcode(ast: &AST) {
     //  End the first uLisp Scope and get the uLisp S-Expression for the scope
     let output = scope::end_scope(scope_index);
     println!("Transcoded uLisp:\n{}", output);
+    output
 }
 
 /// Transcode the Rhai AST Node to uLisp
@@ -115,7 +117,7 @@ fn transcode_stmt(stmt: &Stmt) -> String {
         Stmt::For(expr, id_counter, _) => {
             //  TODO: Support `for` counter
             let id    = &id_counter.0;
-            let stmts = &mut id_counter.2.clone();
+            let stmts = &id_counter.2;
 
             //  Get the `for` range, e.g. `[0, 10]`
             let range = get_range(expr);
@@ -133,17 +135,112 @@ fn transcode_stmt(stmt: &Stmt) -> String {
             );
 
             //  Transcode the Statement Block
-            stmts.statements_mut().iter().for_each(|stmt| {
-                //  Transcode each Statement
-                let output = transcode_stmt(stmt);
-
-                //  Add the transcoded uLisp S-Expression to the current scope
-                scope::add_to_scope(&output);
-            });
+            transcode_block(stmts);
 
             //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
             scope::end_scope(scope_index)
         }        
+
+        /* Loop or While Statement: `loop { ... }`
+            While(
+                (),
+                Block[
+                    Var(
+                        1 @ 4:21,
+                        "a" @ 4:17,
+                        (),
+                        4:13,
+                    ),
+                    If(
+                        FnCall {
+                            name: "==",
+                            hash: 12432925577119877140 (native only),
+                            args: [
+                                Variable(a #1) @ 5:16,
+                                StackSlot(0) @ 5:21,
+                            ],
+                            constants: [
+                                1,
+                            ],
+                        } @ 5:18,
+                        (
+                            Block[
+                                Break(
+                                    5:25,
+                                ),
+                            ] @ 5:23,
+                            Block[],
+                        ),
+                        5:13,
+                    ),
+                ] @ 3:14,
+                3:9,
+            )        
+            becomes...
+            ( loop ... )
+        */
+        Stmt::While(expr, stmts, _) => {
+            //  Begin a new uLisp Scope
+            let scope_index = scope::begin_scope("loop");
+
+            //  TODO: Transcode `expr`
+            assert!("()" == format!("{:?}", expr));
+
+            //  Transcode the Statement Block
+            transcode_block(stmts);
+
+            //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
+            scope::end_scope(scope_index)
+        }
+
+        /* If Statement: `if a == 1 { ... }`
+            If(
+                FnCall {
+                    name: "==",
+                    hash: 6230347975385344721 (native only),
+                    args: [
+                        Variable(a #1) @ 5:16,
+                        StackSlot(0) @ 5:21,
+                    ],
+                    constants: [
+                        1,
+                    ],
+                } @ 5:18,
+                (
+                    Block[
+                        Break(
+                            5:25,
+                        ),
+                    ] @ 5:23,
+                    Block[],
+                ),
+                5:13,
+            )        
+            becomes...
+            ( if ( eq a 1 ) ... )
+        */
+        Stmt::If(expr, then_else, _) => {
+            //  Begin a new uLisp Scope
+            let scope_index = scope::begin_scope(
+                format!(
+                    "if {}",
+                    transcode_expr(expr)
+                ).as_str()
+            );
+
+            //  Transcode the Then Statement Block
+            transcode_block(&then_else.0);
+
+            //  Transcode the Else Statement Block
+            transcode_block(&then_else.1);
+
+            //  End the uLisp Scope and add the transcoded uLisp S-Expression to the parent scope
+            scope::end_scope(scope_index)
+        }
+
+        //  Break Statement: `break`
+        //  becomes `( return )`
+        Stmt::Break(_) => "( return )".to_string(),
 
         //  Function Call: `gpio::enable_output(LED_GPIO, 0, 0)`
         Stmt::FnCall(expr, _) => format!(
@@ -224,12 +321,24 @@ fn transcode_fncall(expr: &FnCallExpr) -> String {
     )
 }
 
+/// Transcode the Statement Block and the transcoded uLisp S-Expression to the current scope
+fn transcode_block(stmts: &StmtBlock) {
+    stmts.clone().statements_mut().iter().for_each(|stmt| {
+        //  Transcode each Statement
+        let output = transcode_stmt(stmt);
+
+        //  Add the transcoded uLisp S-Expression to the current scope
+        scope::add_to_scope(&output);
+    });
+}
+
 /// Rename a Rhai Function or Operator Name to uLisp:
-/// `%` becomes `mod`
+/// `%` becomes `mod`, `==` becomes `eq`
 fn rename_function(name: &str) -> String {
     match name {
-        "%" => "mod",
-        _   => name
+        "%"  => "mod",  //  `%` becomes `mod`
+        "==" => "eq",   //  `==` becomes `eq`
+        _    => name    //  Else pass through
     }.to_string()
 }
 
@@ -285,11 +394,76 @@ fn get_range(expr: &Expr) -> [i32; 2] {
 
 begin: let* ()
 Node: Stmt(
-    Var(
-        11 @ 4:24,
-        "LED_GPIO" @ 4:13,
+    While(
         (),
-        4:9,
+        Block[
+            Var(
+                1 @ 4:21,
+                "a" @ 4:17,
+                (),
+                4:13,
+            ),
+            FnCall(
+                FnCallExpr {
+                    namespace: None,
+                    hashes: 67527529886503918,
+                    args: [
+                        Variable(a #1) @ 5:19,
+                    ],
+                    constants: [],
+                    name: "print",
+                    capture: false,
+                },
+                5:13,
+            ),
+            If(
+                FnCall {
+                    name: "==",
+                    hash: 17995251237036173671 (native only),
+                    args: [
+                        Variable(a #1) @ 6:16,
+                        StackSlot(0) @ 6:21,
+                    ],
+                    constants: [
+                        1,
+                    ],
+                } @ 6:18,
+                (
+                    Block[
+                        Break(
+                            6:25,
+                        ),
+                    ] @ 6:23,
+                    Block[],
+                ),
+                6:13,
+            ),
+        ] @ 3:14,
+        3:9,
+    ),
+)
+begin: loop
+begin: let* (( a 1 ))
+add:   ( print a )
+begin: if ( eq a 1 )
+add:   ( return )
+add:   ( if ( eq a 1 ) 
+  ( return )
+)
+add:   ( loop 
+  ( let* (( a 1 )) 
+    ( print a )
+    ( if ( eq a 1 ) 
+      ( return )
+    )
+  )
+)
+Node: Stmt(
+    Var(
+        11 @ 11:24,
+        "LED_GPIO" @ 11:13,
+        (),
+        11:9,
     ),
 )
 begin: let* (( LED_GPIO 11 ))
@@ -299,11 +473,11 @@ Node: Stmt(
             namespace: Some(
                 gpio,
             ),
-            hashes: 4217139305637504581,
+            hashes: 12987214658708294900,
             args: [
-                Variable(LED_GPIO #1) @ 7:29,
-                StackSlot(0) @ 7:39,
-                StackSlot(1) @ 7:42,
+                Variable(LED_GPIO #1) @ 14:29,
+                StackSlot(0) @ 14:39,
+                StackSlot(1) @ 14:42,
             ],
             constants: [
                 0,
@@ -312,7 +486,7 @@ Node: Stmt(
             name: "enable_output",
             capture: false,
         },
-        7:15,
+        14:15,
     ),
 )
 add:   ( bl_gpio_enable_output LED_GPIO 0 0 )
@@ -320,18 +494,18 @@ Node: Stmt(
     For(
         FnCall {
             name: "range",
-            hash: 8244420188984039809,
+            hash: 575929612303946337,
             args: [
-                StackSlot(0) @ 10:24,
-                StackSlot(1) @ 10:27,
+                StackSlot(0) @ 17:24,
+                StackSlot(1) @ 17:27,
             ],
             constants: [
                 0,
                 10,
             ],
-        } @ 10:18,
+        } @ 17:18,
         (
-            "i" @ 10:13,
+            "i" @ 17:13,
             None,
             Block[
                 FnCall(
@@ -339,33 +513,33 @@ Node: Stmt(
                         namespace: Some(
                             gpio,
                         ),
-                        hashes: 17196306752838884910,
+                        hashes: 11353779519759374485,
                         args: [
-                            Variable(LED_GPIO #2) @ 14:17,
+                            Variable(LED_GPIO #2) @ 21:17,
                             FnCall {
                                 name: "%",
-                                hash: 16310553074906991622 (native only),
+                                hash: 3751886575790804804 (native only),
                                 args: [
-                                    Variable(i #1) @ 15:17,
-                                    StackSlot(0) @ 15:21,
+                                    Variable(i #1) @ 22:17,
+                                    StackSlot(0) @ 22:21,
                                 ],
                                 constants: [
                                     2,
                                 ],
-                            } @ 15:19,
+                            } @ 22:19,
                         ],
                         constants: [],
                         name: "output_set",
                         capture: false,
                     },
-                    13:19,
+                    20:19,
                 ),
                 FnCall(
                     FnCallExpr {
                         namespace: None,
-                        hashes: 1493544216411903228,
+                        hashes: 16488626815644268959,
                         args: [
-                            StackSlot(0) @ 19:24,
+                            StackSlot(0) @ 26:24,
                         ],
                         constants: [
                             1000,
@@ -373,11 +547,11 @@ Node: Stmt(
                         name: "time_delay",
                         capture: false,
                     },
-                    19:13,
+                    26:13,
                 ),
-            ] @ 10:31,
+            ] @ 17:31,
         ),
-        10:9,
+        17:9,
     ),
 )
 begin: dotimes (i 10)
@@ -389,19 +563,19 @@ add:   ( dotimes (i 10)
 )
 Node: Stmt(
     Var(
-        40 @ 23:17,
-        "a" @ 23:13,
+        40 @ 30:17,
+        "a" @ 30:13,
         (),
-        23:9,
+        30:9,
     ),
 )
 begin: let* (( a 40 ))
 Node: Stmt(
     Var(
-        2 @ 24:17,
-        "b" @ 24:13,
+        2 @ 31:17,
+        "b" @ 31:13,
         (),
-        24:9,
+        31:9,
     ),
 )
 begin: let* (( b 2 ))
@@ -409,21 +583,29 @@ Node: Stmt(
     FnCall(
         FnCallExpr {
             namespace: None,
-            hashes: 8174902439497844401 (native only),
+            hashes: 749902770210084069 (native only),
             args: [
-                Variable(a #2) @ 25:9,
-                Variable(b #1) @ 25:13,
+                Variable(a #2) @ 32:9,
+                Variable(b #1) @ 32:13,
             ],
             constants: [],
             name: "+",
             capture: false,
         },
-        25:11,
+        32:11,
     ),
 )
 add:   ( + a b )
 Transcoded uLisp:
 ( let* () 
+  ( loop 
+    ( let* (( a 1 )) 
+      ( print a )
+      ( if ( eq a 1 ) 
+        ( return )
+      )
+    )
+  )
   ( let* (( LED_GPIO 11 )) 
     ( bl_gpio_enable_output LED_GPIO 0 0 )
     ( dotimes (i 10) 
@@ -436,6 +618,5 @@ Transcoded uLisp:
       )
     )
   )
-)
-                  
+)                
 */
