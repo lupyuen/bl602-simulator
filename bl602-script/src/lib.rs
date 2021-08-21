@@ -1,4 +1,4 @@
-//!  BL602 Rust Scripting Library
+//! BL602 Rust Scripting Library
 
 #![feature(libc)]  //  Allow C Standard Library, which will be mapped by emscripten to JavaScript
 
@@ -9,6 +9,7 @@ extern crate wee_alloc;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
+mod scope;
 mod transcode;
 
 //  Import Libraries

@@ -1,4 +1,4 @@
-//!  Transcode BL602 Rhai Script to uLisp
+//! Transcode BL602 Rhai Script to uLisp
 
 use std::convert::TryInto;
 use rhai::{
