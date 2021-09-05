@@ -2,7 +2,9 @@
 
 Based on Rhai Scripting Engine: https://rhai.rs/book
 
-[Follow the updates in this Twitter Thread](https://twitter.com/MisterTechBlog/status/1427758328004759552)
+Read the article...
+
+-   ["Rust on RISC-V BL602: Rhai Scripting"](https://lupyuen.github.io/articles/rhai)
 
 Here's a Rhai Script that works with BL602 Simulator: [src/lib.rs](src/lib.rs)
 

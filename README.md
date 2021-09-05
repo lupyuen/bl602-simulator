@@ -6,9 +6,7 @@ Try it here: https://lupyuen.github.io/bl602-simulator/
 
 Read the article...
 
--   [__"Rust on RISC-V BL602: Simulated with WebAssembly"__](https://lupyuen.github.io/articles/rustsim)
-
-Follow the updates on Twitter: https://twitter.com/MisterTechBlog/status/1423169766080933891
+-   ["Rust on RISC-V BL602: Rhai Scripting"](https://lupyuen.github.io/articles/rhai)
 
 ![BL602 Simulator in WebAssembly](https://lupyuen.github.io/images/adc-simulator2.png)
 
